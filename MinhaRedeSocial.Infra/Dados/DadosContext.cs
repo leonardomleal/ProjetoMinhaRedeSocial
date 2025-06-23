@@ -120,14 +120,14 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         modelBuilder.Entity<Solicitante>()
             .HasOne(x => x.Solicitacao)
             .WithOne(x => x.Solicitante)
-            .HasForeignKey<Amigo>(p => p.Id)
+            .HasForeignKey<Solicitante>(p => p.Id)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<Solicitante>()
             .HasOne(x => x.Usuario)
             .WithOne(x => x.Solicitante)
-            .HasForeignKey<Amigo>(p => p.UsuarioId)
+            .HasForeignKey<Solicitante>(p => p.UsuarioId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
         #endregion
