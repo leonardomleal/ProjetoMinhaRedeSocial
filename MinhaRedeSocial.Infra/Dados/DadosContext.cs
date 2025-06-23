@@ -1,19 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinhaRedeSocial.Domain.Models.Amigos;
-using MinhaRedeSocial.Domain.Models.Postagens;
-using MinhaRedeSocial.Domain.Models.Solicitacoes;
 using MinhaRedeSocial.Domain.Models.Usuarios;
 
 namespace MinhaRedeSocial.Infra.Dados;
 
 public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(options)
 {
-    public DbSet<Amigo> Amigos => Set<Amigo>();
-    public DbSet<Solicitante> Solicitantes => Set<Solicitante>();
-    public DbSet<Solicitacao> Solicitacoes => Set<Solicitacao>();
     public DbSet<Usuario> Usuarios => Set<Usuario>();
-    public DbSet<Comentario> Comentarios => Set<Comentario>();
-    public DbSet<Postagem> Postagens => Set<Postagem>();
+    public DbSet<Amigo> Amigos => Set<Amigo>();
+    //public DbSet<Solicitante> Solicitantes => Set<Solicitante>();
+    //public DbSet<Solicitacao> Solicitacoes => Set<Solicitacao>();
+    //public DbSet<Comentario> Comentarios => Set<Comentario>();
+    //public DbSet<Postagem> Postagens => Set<Postagem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -46,6 +44,26 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         //    new Usuario("Renan", "renan@cwi.com.br", string.Empty, DateTime.Parse("2000-01-01T00:00:00"), string.Empty, string.Empty, string.Empty),
         //    new Usuario("Rômulo", "romulo@cwi.com.br", string.Empty, DateTime.Parse("2000-01-01T00:00:00"), string.Empty, string.Empty, string.Empty)
         //);
+        #endregion
+
+        #region Amigos
+        //Configurações de propriedades.
+        modelBuilder.Entity<Amigo>()
+            .HasOne(x => x.Usuario)
+            .WithMany(x => x.Amigos)
+            .HasForeignKey(p => p.UsuarioId);
+
+        modelBuilder.Entity<Amigo>()
+            .HasOne(x => x.UsuarioAmigo)
+            .WithMany(x => x.Amigos)
+            .HasForeignKey(p => p.UsuarioAmigoId);
+
+        //Ignore propriedades.
+        modelBuilder.Entity<Amigo>().Ignore(x => x.Usuario);
+        modelBuilder.Entity<Amigo>().Ignore(x => x.UsuarioAmigo);
+
+        //Definindo chave primária.
+        modelBuilder.Entity<Amigo>().HasKey(x => x.Id);
         #endregion
     }
 }
