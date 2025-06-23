@@ -33,6 +33,7 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
 
         //Ignore propriedades.
         modelBuilder.Entity<Usuario>().Ignore(x => x.Amizades);
+        modelBuilder.Entity<Usuario>().Ignore(x => x.Amigo);
 
         //Definindo chave primária.
         modelBuilder.Entity<Usuario>().HasKey(x => x.Id);
@@ -48,24 +49,31 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         #endregion
 
         #region Amizade
-        //Configurações de propriedades.
+        //Ignore propriedades.
+        modelBuilder.Entity<Amizade>().Ignore(x => x.Usuario);
+        modelBuilder.Entity<Amizade>().Ignore(x => x.Amigo);
+
+        //Definindo chave primária.
+        modelBuilder.Entity<Amizade>().HasKey(x => x.Id);
+
+        //Configurações chaves estrangeiras.
         modelBuilder.Entity<Amizade>()
             .HasOne(x => x.Usuario)
             .WithMany(x => x.Amizades)
             .HasForeignKey(p => p.UsuarioId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
-
-        //Ignore propriedades.
-        //modelBuilder.Entity<Amizade>().Ignore(x => x.Usuario);
-        //modelBuilder.Entity<Amizade>().Ignore(x => x.Amigo);
-
-        //Definindo chave primária.
-        modelBuilder.Entity<Amizade>().HasKey(x => x.Id);
         #endregion
 
         #region Amigo
-        //Configurações de propriedades.
+        //Ignore propriedades.
+        modelBuilder.Entity<Amigo>().Ignore(x => x.Amizade);
+        modelBuilder.Entity<Amigo>().Ignore(x => x.Usuario);
+
+        //Definindo chave primária.
+        modelBuilder.Entity<Amigo>().HasKey(x => x.Id);
+
+        //Configurações chaves estrangeiras.
         modelBuilder.Entity<Amigo>()
             .HasOne(x => x.Amizade)
             .WithOne(x => x.Amigo)
@@ -79,12 +87,6 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
             .HasForeignKey<Amigo>(p => p.UsuarioId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
-
-        //Ignore propriedades.
-        modelBuilder.Entity<Amigo>().Ignore(x => x.Amizade);
-
-        //Definindo chave primária.
-        modelBuilder.Entity<Amigo>().HasKey(x => x.Id);
         #endregion
     }
 }
