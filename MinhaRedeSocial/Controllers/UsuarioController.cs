@@ -7,8 +7,8 @@ using System.Net;
 
 namespace MinhaRedeSocial.Api.Controllers;
 
-[ApiVersion("1")]
-[ApiController, Route("api/v{version:apiVersion}/Usuario"), Produces("application/json")]
+[ApiController]
+[Route("api/Usuario")]
 public class UsuarioController : ControllerBase
 {
     private readonly IBuscarUsuarioService _buscarUsuarioService;
