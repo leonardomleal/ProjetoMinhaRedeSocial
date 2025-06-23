@@ -1,5 +1,4 @@
 ﻿using MinhaRedeSocial.Domain.Models.Amigos;
-using MinhaRedeSocial.Domain.Models.Solicitacoes;
 
 namespace MinhaRedeSocial.Domain.Models.Usuarios;
 
@@ -24,6 +23,6 @@ public class Usuario
     public string Cep { get; set; }
     public string Senha { get; set; }
     public string? Foto { get; set; }
-    public List<Solicitacao> Solicitacoes { get; set; } = new List<Solicitacao>(); 
-    public List<Amigo> Amigos { get; set; } = new List<Amigo>();
+
+    public virtual Amizade Amizade { get; set; }
 }
