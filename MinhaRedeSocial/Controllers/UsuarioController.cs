@@ -25,7 +25,7 @@ public class UsuarioController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost()]
+    [HttpPost]
     public async Task<IActionResult> CadastrarUsuario([FromBody] CadastrarUsuarioRequest request, CancellationToken cancelationToken)
     {
         var serviceResult = new CadastrarUsuarioResponse();
