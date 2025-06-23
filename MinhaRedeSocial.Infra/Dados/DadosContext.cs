@@ -1,11 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MinhaRedeSocial.Domain.Models.Amigos;
+using MinhaRedeSocial.Domain.Models.Postagens;
+using MinhaRedeSocial.Domain.Models.Solicitacoes;
 using MinhaRedeSocial.Domain.Models.Usuarios;
 
 namespace MinhaRedeSocial.Infra.Dados;
 
 public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(options)
 {
+    public DbSet<Amigo> Amigos => Set<Amigo>();
+    public DbSet<Solicitante> Solicitantes => Set<Solicitante>();
+    public DbSet<Solicitacao> Solicitacoes => Set<Solicitacao>();
     public DbSet<Usuario> Usuarios => Set<Usuario>();
+    public DbSet<Comentario> Comentarios => Set<Comentario>();
+    public DbSet<Postagem> Postagens => Set<Postagem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
