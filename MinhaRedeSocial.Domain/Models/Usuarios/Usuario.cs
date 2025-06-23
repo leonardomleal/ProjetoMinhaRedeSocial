@@ -1,4 +1,5 @@
 ﻿using MinhaRedeSocial.Domain.Models.Amigos;
+using MinhaRedeSocial.Domain.Models.Postagens;
 using MinhaRedeSocial.Domain.Models.Solicitacoes;
 
 namespace MinhaRedeSocial.Domain.Models.Usuarios;
@@ -29,4 +30,6 @@ public class Usuario
     public virtual Amigo Amigo { get; set; }
     public virtual List<Solicitacao> Solicitacaos { get; set; }
     public virtual Solicitante Solicitante { get; set; }
+    public virtual List<Postagem> Postagens {  get; set; }
+    public virtual Comentario Comentario { get; set; }
 }
