@@ -57,8 +57,8 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
             .OnDelete(DeleteBehavior.SetNull);
 
         //Ignore propriedades.
-        modelBuilder.Entity<Amizade>().Ignore(x => x.Usuario);
-        modelBuilder.Entity<Amizade>().Ignore(x => x.Amigo);
+        //modelBuilder.Entity<Amizade>().Ignore(x => x.Usuario);
+        //modelBuilder.Entity<Amizade>().Ignore(x => x.Amigo);
 
         //Definindo chave primária.
         modelBuilder.Entity<Amizade>().HasKey(x => x.Id);
@@ -70,6 +70,13 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
             .HasOne(x => x.Amizade)
             .WithOne(x => x.Amigo)
             .HasForeignKey<Amigo>(p => p.Id)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<Amigo>()
+            .HasOne(x => x.Usuario)
+            .WithOne(x => x.Amigo)
+            .HasForeignKey<Amigo>(p => p.UsuarioId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
 

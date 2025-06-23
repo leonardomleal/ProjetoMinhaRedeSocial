@@ -25,4 +25,5 @@ public class Usuario
     public string? Foto { get; set; }
 
     public virtual List<Amizade> Amizades { get; set; }
+    public virtual Amigo Amigo { get; set; }
 }

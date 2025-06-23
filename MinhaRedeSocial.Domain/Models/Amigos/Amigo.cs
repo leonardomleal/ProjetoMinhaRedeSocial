@@ -9,6 +9,8 @@ public class Amigo
     public string Email { get; set; }
     public string? Apelido { get; set; }
     public string? Foto { get; set; }
+    public Guid UsuarioId { get; set; }
 
     public virtual Amizade Amizade { get; set; }
+    public virtual Usuario Usuario { get; set; }
 }
