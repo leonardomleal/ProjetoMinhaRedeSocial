@@ -32,7 +32,7 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         //});
 
         //Ignore propriedades.
-        modelBuilder.Entity<Usuario>().Ignore(x => x.Amizade);
+        modelBuilder.Entity<Usuario>().Ignore(x => x.Amizades);
 
         //Definindo chave primária.
         modelBuilder.Entity<Usuario>().HasKey(x => x.Id);
@@ -59,20 +59,21 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         //Configurações de propriedades.
         modelBuilder.Entity<Amizade>()
             .HasOne(x => x.Usuario)
-            .WithOne(x => x.Amizade)
-            .HasForeignKey<Amizade>(p => p.UsuarioId)
+            .WithMany(x => x.Amizades)
+            .HasForeignKey(p => p.UsuarioId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<Amizade>()
-            .HasMany(x => x.Amizades)
+            .HasOne(x => x.Amigo)
             .WithOne(x => x.Amizade)
-            .HasForeignKey(p => p.Id)
+            .HasForeignKey<Amizade>(p => p.AmizadeId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
 
         //Ignore propriedades.
         modelBuilder.Entity<Amizade>().Ignore(x => x.Usuario);
+        modelBuilder.Entity<Amizade>().Ignore(x => x.Amigo);
 
         //Definindo chave primária.
         modelBuilder.Entity<Amizade>().HasKey(x => x.Id);

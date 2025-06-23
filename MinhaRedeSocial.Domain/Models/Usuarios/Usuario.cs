@@ -24,5 +24,5 @@ public class Usuario
     public string Senha { get; set; }
     public string? Foto { get; set; }
 
-    public virtual Amizade Amizade { get; set; }
+    public virtual List<Amizade> Amizades { get; set; }
 }
