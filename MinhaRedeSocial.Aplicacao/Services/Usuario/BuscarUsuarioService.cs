@@ -14,26 +14,27 @@ public class BuscarUsuarioService : IBuscarUsuarioService
     public BuscarUsuarioService(IUsuarioRepository usuarioRepository, ILogger<BuscarUsuarioService> logger)
     {
         _usuarioRepository = usuarioRepository;
+        _logger = logger;
     }
 
-    public async Task<BuscarUsuarioResponse> Executar(string request, CancellationToken cancellationToken)
+    public async Task<BuscarUsuarioResponse> Executar(Guid id, CancellationToken cancellationToken)
     {
         var retorno = new BuscarUsuarioResponse();
 
-		try
-		{
-            var resultado = await _usuarioRepository.Buscar(request, cancellationToken);
+        try
+        {
+            var resultado = await _usuarioRepository.Buscar(id, cancellationToken);
 
-            //if (resultado is null)
-            //    throw new Exception("Nenhum usuário foi encontrado.");
+            if (resultado is null)
+                _logger.LogInformation("Nenhum usuário foi encontrado.");
 
             retorno = resultado?.MapToBuscarUsuarioResponse();
         }
-		catch (Exception ex)
-		{
-            _logger.LogError(ex, $"Ocorreu um erro ao buscar usuário {request}.");
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Ocorreu um erro ao buscar usuário {id}.");
             throw;
-		}
+        }
 
         return retorno;
     }

@@ -30,4 +30,23 @@ public static class UsuarioExtensionMap
             Senha = usuario.Senha,
             Foto = usuario.Foto
         };
+
+    public static List<BuscarUsuarioResponse> MapToBuscarUsuariosResponse(this List<Usuario> usuario)
+    {
+        var listaUsuarios = new List<BuscarUsuarioResponse>();
+
+        usuario.ForEach(x => listaUsuarios.Add(new()
+        {
+            Id = x.Id,
+            Nome = x.Nome,
+            Email = x.Email,
+            Apelido = x.Apelido,
+            DataNascimento = x.DataNascimento,
+            Cep = x.Cep,
+            Senha = x.Senha,
+            Foto = x.Foto
+        }));
+
+        return listaUsuarios;
+    }
 }

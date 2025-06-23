@@ -16,7 +16,6 @@ public class CadastrarUsuarioRequestValidator : AbstractValidator<CadastrarUsuar
             .MaximumLength(255).WithMessage("E-mail deve ter no máximo 255 caracteres.");
 
         RuleFor(x => x.Apelido)
-            .Must(apelido => !string.IsNullOrEmpty(apelido))
             .MaximumLength(50).WithMessage("Apelido deve ter no máximo 50 caracteres.");
 
         RuleFor(x => x.DataNascimento)
@@ -32,7 +31,6 @@ public class CadastrarUsuarioRequestValidator : AbstractValidator<CadastrarUsuar
             .MaximumLength(128).WithMessage("Senha deve ter no máximo 128 caracteres.");
 
         RuleFor(x => x.Foto)
-            .Must(foto => !string.IsNullOrEmpty(foto))
             .MaximumLength(512).WithMessage("Tamanho da imagem maior que o permitido.");
     }
 }

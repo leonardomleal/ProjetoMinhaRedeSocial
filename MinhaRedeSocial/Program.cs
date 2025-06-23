@@ -17,6 +17,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DadosContext>(options => options.UseSqlite("Data Source=MinhaRedeSocial.db"));
 //Services
 builder.Services.AddScoped<IBuscarUsuarioService, BuscarUsuarioService>();
+builder.Services.AddScoped<IPesquisarUsuariosService, PesquisarUsuariosService>();
+builder.Services.AddScoped<IPesquisarUsuariosPaginadoService, PesquisarUsuariosPaginadoService>();
 builder.Services.AddScoped<ICadastrarUsuarioService, CadastrarUsuarioService>();
 //Repositories
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
