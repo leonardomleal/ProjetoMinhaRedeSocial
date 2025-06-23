@@ -9,4 +9,6 @@ public interface IUsuarioRepository
     Task<Usuario> Adicionar(Usuario usuario);
     Task<Usuario?> Atualizar(Usuario usuario);
     Task<bool> Deletar(Guid id);
+    Task<Usuario?> Buscar(string busca, CancellationToken cancellationToken);
+    Task<Usuario> Cadastrar(Usuario usuario, CancellationToken cancellationToken);
 }

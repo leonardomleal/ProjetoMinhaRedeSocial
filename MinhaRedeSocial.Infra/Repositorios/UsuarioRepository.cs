@@ -108,4 +108,34 @@ public class UsuarioRepository : IUsuarioRepository
             throw;
         }
     }
+
+    public async Task<Usuario?> Buscar(string busca, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await _context.Usuarios
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Nome == busca || x.Email == busca, cancellationToken);
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Ocorreu um erro ao buscar o usuário.");
+            throw;
+        }
+    }
+
+    public async Task<Usuario> Cadastrar(Usuario usuario, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _context.Usuarios.AddAsync(usuario);
+            await _context.SaveChangesAsync(cancellationToken);
+            return usuario;
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Ocorreu um erro ao cadastrar o usuário.");
+            throw;
+        }
+    }
 }

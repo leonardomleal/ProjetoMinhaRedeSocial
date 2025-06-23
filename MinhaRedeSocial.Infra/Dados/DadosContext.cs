@@ -37,6 +37,8 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         modelBuilder.Entity<Usuario>().Ignore(x => x.Amigo);
         modelBuilder.Entity<Usuario>().Ignore(x => x.Solicitacaos);
         modelBuilder.Entity<Usuario>().Ignore(x => x.Solicitante);
+        modelBuilder.Entity<Usuario>().Ignore(x => x.Postagens);
+        modelBuilder.Entity<Usuario>().Ignore(x => x.Comentario);
 
         //Definindo chave primária.
         modelBuilder.Entity<Usuario>().HasKey(x => x.Id);

@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using MinhaRedeSocial.Aplicacao.Contratos.Services;
+using MinhaRedeSocial.Aplicacao.Services.Usuario;
 using MinhaRedeSocial.Domain.Contratos.Repositorios;
 using MinhaRedeSocial.Infra.Dados;
 using MinhaRedeSocial.Infra.Repositorios;
@@ -13,6 +15,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DadosContext>(options => options.UseSqlite("Data Source=MinhaRedeSocial.db"));
+//Services
+builder.Services.AddScoped<IBuscarUsuarioService, BuscarUsuarioService>();
+builder.Services.AddScoped<ICadastrarUsuarioService, CadastrarUsuarioService>();
+//Repositories
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 var app = builder.Build();
