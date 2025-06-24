@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using MinhaRedeSocial.Domain.Contratos.Paged;
 using MinhaRedeSocial.Domain.Contratos.Repositorios;
-using MinhaRedeSocial.Domain.Enums;
+using MinhaRedeSocial.Domain.Enums.Sorts;
 using MinhaRedeSocial.Domain.Models.Usuarios;
 using MinhaRedeSocial.Infra.Dados;
 
@@ -157,26 +157,98 @@ public class UsuarioRepository : IUsuarioRepository
         }
     }
 
-    public async Task<IPagedList<Usuario>> PesquisarPaginado(string nomeEmail, int pageNumber, int pageSize, SortDirection sort, CancellationToken cancellationToken)
+    public async Task<IPagedList<Usuario>> PesquisarPaginado(string nomeEmail, PesquisarUsuariosSort orderBy, int pageNumber, int pageSize, SortDirection sort, CancellationToken cancellationToken)
     {
         try
         {
             if (sort.Equals(SortDirection.Desc))
-                return new PagedList<Usuario>(
+            {
+                return orderBy switch
+                {
+                    PesquisarUsuariosSort.Id => new PagedList<Usuario>(
+                        await _context.Usuarios
+                            .OrderByDescending(x => x.Id)
+                            .Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize)
+                            .ToListAsync(cancellationToken),
+                        pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+
+                    PesquisarUsuariosSort.Nome => new PagedList<Usuario>(
+                        await _context.Usuarios
+                            .OrderByDescending(x => x.Nome)
+                            .Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize)
+                            .ToListAsync(cancellationToken),
+                        pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+
+                    PesquisarUsuariosSort.Email => new PagedList<Usuario>(
+                        await _context.Usuarios
+                            .OrderByDescending(x => x.Email)
+                            .Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize)
+                            .ToListAsync(cancellationToken),
+                        pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+
+                    PesquisarUsuariosSort.DataNascimento => new PagedList<Usuario>(
+                        await _context.Usuarios
+                            .OrderByDescending(x => x.DataNascimento)
+                            .Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize)
+                            .ToListAsync(cancellationToken),
+                        pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+
+                    _ => new PagedList<Usuario>(
+                        await _context.Usuarios
+                            .OrderByDescending(x => x.Nome)
+                            .Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize)
+                            .ToListAsync(cancellationToken),
+                        pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+                };
+            }
+
+            return orderBy switch
+            {
+                PesquisarUsuariosSort.Id => new PagedList<Usuario>(
                     await _context.Usuarios
-                        .OrderByDescending(x => x.Nome)
+                        .OrderBy(x => x.Id)
                         .Skip((pageNumber - 1) * pageSize)
                         .Take(pageSize)
                         .ToListAsync(cancellationToken),
-                    pageNumber, pageSize, await _context.Usuarios.CountAsync());
+                    pageNumber, pageSize, await _context.Usuarios.CountAsync()),
 
-            return new PagedList<Usuario>(
-                await _context.Usuarios
-                    .OrderBy(x => x.Nome)
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync(cancellationToken),
-                pageNumber, pageSize, await _context.Usuarios.CountAsync());
+                PesquisarUsuariosSort.Nome => new PagedList<Usuario>(
+                    await _context.Usuarios
+                        .OrderBy(x => x.Nome)
+                        .Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToListAsync(cancellationToken),
+                    pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+
+                PesquisarUsuariosSort.Email => new PagedList<Usuario>(
+                    await _context.Usuarios
+                        .OrderBy(x => x.Email)
+                        .Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToListAsync(cancellationToken),
+                    pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+
+                PesquisarUsuariosSort.DataNascimento => new PagedList<Usuario>(
+                    await _context.Usuarios
+                        .OrderBy(x => x.DataNascimento)
+                        .Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToListAsync(cancellationToken),
+                    pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+
+                _ => new PagedList<Usuario>(
+                    await _context.Usuarios
+                        .OrderBy(x => x.Nome)
+                        .Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToListAsync(cancellationToken),
+                    pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+            };
         }
         catch (DbUpdateException ex)
         {
