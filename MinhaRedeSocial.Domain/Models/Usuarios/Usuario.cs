@@ -31,5 +31,5 @@ public class Usuario
     public virtual List<Solicitacao> Solicitacaos { get; set; }
     public virtual Solicitante Solicitante { get; set; }
     public virtual List<Postagem> Postagens {  get; set; }
-    public virtual Comentario Comentario { get; set; }
+    public virtual List<Comentario> Comentarios { get; set; }
 }

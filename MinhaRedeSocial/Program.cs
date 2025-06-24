@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MinhaRedeSocial.Aplicacao.Contratos.Services;
+using MinhaRedeSocial.Aplicacao.Services.Postagem;
 using MinhaRedeSocial.Aplicacao.Services.Solicitacao;
 using MinhaRedeSocial.Aplicacao.Services.Usuario;
 using MinhaRedeSocial.Domain.Contratos.Repositorios;
@@ -22,9 +23,12 @@ builder.Services.AddScoped<IPesquisarUsuariosService, PesquisarUsuariosService>(
 builder.Services.AddScoped<IPesquisarUsuariosPaginadoService, PesquisarUsuariosPaginadoService>();
 builder.Services.AddScoped<ICadastrarUsuarioService, CadastrarUsuarioService>();
 builder.Services.AddScoped<IBuscarSolicitacoesPorUsuarioService, BuscarSolicitacoesPorUsuarioService>();
+builder.Services.AddScoped<IBuscarPostagensService, BuscarPostagensService>();
 //Repositories
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ISolicitacaoRepository, SolicitacaoRepository>();
+builder.Services.AddScoped<IPostagemRepository, PostagemRepository>();
+builder.Services.AddScoped<IAmizadeRepository, AmizadeRepository>();
 
 var app = builder.Build();
 

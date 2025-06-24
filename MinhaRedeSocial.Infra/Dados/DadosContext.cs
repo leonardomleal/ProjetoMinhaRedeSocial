@@ -38,7 +38,7 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         modelBuilder.Entity<Usuario>().Ignore(x => x.Solicitacaos);
         modelBuilder.Entity<Usuario>().Ignore(x => x.Solicitante);
         modelBuilder.Entity<Usuario>().Ignore(x => x.Postagens);
-        modelBuilder.Entity<Usuario>().Ignore(x => x.Comentario);
+        modelBuilder.Entity<Usuario>().Ignore(x => x.Comentarios);
 
         //Definindo chave primária.
         modelBuilder.Entity<Usuario>().HasKey(x => x.Id);
@@ -68,6 +68,13 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
             .HasForeignKey(p => p.UsuarioId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<Amizade>()
+            .HasOne(x => x.Amigo)
+            .WithOne(x => x.Amizade)
+            .HasForeignKey<Amizade>(p => p.AmigoId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.SetNull);
         #endregion
 
         #region Amigo
@@ -79,13 +86,6 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         modelBuilder.Entity<Amigo>().HasKey(x => x.Id);
 
         //Configurações chaves estrangeiras.
-        modelBuilder.Entity<Amigo>()
-            .HasOne(x => x.Amizade)
-            .WithOne(x => x.Amigo)
-            .HasForeignKey<Amigo>(p => p.Id)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.SetNull);
-
         modelBuilder.Entity<Amigo>()
             .HasOne(x => x.Usuario)
             .WithOne(x => x.Amigo)
@@ -146,8 +146,8 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         //Configurações chaves estrangeiras.
         modelBuilder.Entity<Comentario>()
             .HasOne(x => x.Usuario)
-            .WithOne(x => x.Comentario)
-            .HasForeignKey<Comentario>(p => p.UsuarioId)
+            .WithMany(x => x.Comentarios)
+            .HasForeignKey(p => p.UsuarioId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
 
