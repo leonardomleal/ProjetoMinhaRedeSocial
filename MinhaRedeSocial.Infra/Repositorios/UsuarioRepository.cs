@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MinhaRedeSocial.Domain.Contratos.Paged;
 using MinhaRedeSocial.Domain.Contratos.Repositorios;
+using MinhaRedeSocial.Domain.Enums.Sorts;
 using MinhaRedeSocial.Domain.Models.Usuarios;
 using MinhaRedeSocial.Infra.Dados;
 
@@ -105,6 +107,80 @@ public class UsuarioRepository : IUsuarioRepository
         catch (DbUpdateException ex)
         {
             _logger.LogError(ex, $"Ocorreu um erro ao deletar o usuário de ID {id}.");
+            throw;
+        }
+    }
+
+    public async Task<Usuario?> Buscar(Guid id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await _context.Usuarios
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Ocorreu um erro ao buscar o usuário.");
+            throw;
+        }
+    }
+
+    public async Task<Usuario> Cadastrar(Usuario usuario, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _context.Usuarios.AddAsync(usuario);
+            await _context.SaveChangesAsync(cancellationToken);
+            return usuario;
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Ocorreu um erro ao cadastrar o usuário.");
+            throw;
+        }
+    }
+
+    public async Task<List<Usuario>> Pesquisar(string nomeEmail, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await _context.Usuarios
+                .AsNoTracking()
+                .Where(x => x.Nome.Contains(nomeEmail) || x.Email.Contains(nomeEmail))
+                .ToListAsync(cancellationToken);
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Ocorreu um erro ao buscar o usuários.");
+            throw;
+        }
+    }
+
+    public async Task<IPagedList<Usuario>> PesquisarPaginado(string nomeEmail, PesquisarUsuariosSort orderBy, int pageNumber, int pageSize, SortDirection sort, CancellationToken cancellationToken)
+    {
+        try
+        {
+            if (sort.Equals(SortDirection.Desc))
+                return new PagedList<Usuario>(
+                    await _context.Usuarios
+                        .OrderByDescending(x => x.ToString() == Enum.GetName(orderBy))
+                        .Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToListAsync(cancellationToken),
+                    pageNumber, pageSize, await _context.Usuarios.CountAsync());
+
+            return new PagedList<Usuario>(
+                await _context.Usuarios
+                    .OrderBy(x => x.ToString() == Enum.GetName(orderBy))
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync(cancellationToken),
+                pageNumber, pageSize, await _context.Usuarios.CountAsync());
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Ocorreu um erro ao buscar o usuários págiando.");
             throw;
         }
     }
