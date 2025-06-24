@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using MinhaRedeSocial.Domain.Contratos.Paged;
 using MinhaRedeSocial.Domain.Contratos.Repositorios;
-using MinhaRedeSocial.Domain.Enums.Sorts;
+using MinhaRedeSocial.Domain.Enums;
 using MinhaRedeSocial.Domain.Models.Usuarios;
 using MinhaRedeSocial.Infra.Dados;
 
@@ -157,14 +157,14 @@ public class UsuarioRepository : IUsuarioRepository
         }
     }
 
-    public async Task<IPagedList<Usuario>> PesquisarPaginado(string nomeEmail, PesquisarUsuariosSort orderBy, int pageNumber, int pageSize, SortDirection sort, CancellationToken cancellationToken)
+    public async Task<IPagedList<Usuario>> PesquisarPaginado(string nomeEmail, int pageNumber, int pageSize, SortDirection sort, CancellationToken cancellationToken)
     {
         try
         {
             if (sort.Equals(SortDirection.Desc))
                 return new PagedList<Usuario>(
                     await _context.Usuarios
-                        .OrderByDescending(x => x.ToString() == Enum.GetName(orderBy))
+                        .OrderByDescending(x => x.Nome)
                         .Skip((pageNumber - 1) * pageSize)
                         .Take(pageSize)
                         .ToListAsync(cancellationToken),
@@ -172,7 +172,7 @@ public class UsuarioRepository : IUsuarioRepository
 
             return new PagedList<Usuario>(
                 await _context.Usuarios
-                    .OrderBy(x => x.ToString() == Enum.GetName(orderBy))
+                    .OrderBy(x => x.Nome)
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync(cancellationToken),

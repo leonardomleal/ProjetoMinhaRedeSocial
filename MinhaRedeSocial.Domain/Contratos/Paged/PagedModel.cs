@@ -1,4 +1,4 @@
-﻿using MinhaRedeSocial.Domain.Enums.Sorts;
+﻿using MinhaRedeSocial.Domain.Enums;
 
 namespace MinhaRedeSocial.Domain.Contratos.Paged;
 
