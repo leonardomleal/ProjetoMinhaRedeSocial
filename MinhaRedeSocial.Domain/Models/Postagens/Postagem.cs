@@ -5,11 +5,18 @@ namespace MinhaRedeSocial.Domain.Models.Postagens;
 
 public class Postagem
 {
-    public Guid Id { get; set; }
-    public DateTime Data {  get; set; }
+    public Postagem(string texto, PostagemPermissoes permissao, Guid usuarioId)
+    {
+        Texto = texto;
+        Permissao = permissao;
+        UsuarioId = usuarioId;
+    }
+
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public DateTime Data { get; set; } = DateTime.Now;
     public string Texto { get; set; }
     public int Curtidas { get; set; } = 0;
-    public PostagemPermissoes Permissao {  get; set; }
+    public PostagemPermissoes Permissao { get; set; }
     public Guid UsuarioId { get; set; }
 
     public virtual Usuario Usuario { get; set; }
