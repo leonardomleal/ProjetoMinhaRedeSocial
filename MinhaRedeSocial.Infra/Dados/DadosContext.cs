@@ -80,7 +80,6 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         #region Amigo
         //Ignore propriedades.
         modelBuilder.Entity<Amigo>().Ignore(x => x.Usuario);
-        modelBuilder.Entity<Amigo>().Ignore(x => x.Amizade);
 
         //Definindo chave primária.
         modelBuilder.Entity<Amigo>().HasKey(x => x.Id);

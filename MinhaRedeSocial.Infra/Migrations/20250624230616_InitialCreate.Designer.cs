@@ -11,7 +11,7 @@ using MinhaRedeSocial.Infra.Dados;
 namespace MinhaRedeSocial.Infra.Migrations
 {
     [DbContext(typeof(DadosContext))]
-    [Migration("20250623200224_InitialCreate")]
+    [Migration("20250624230616_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -23,6 +23,7 @@ namespace MinhaRedeSocial.Infra.Migrations
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Amigos.Amigo", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Apelido")
@@ -64,6 +65,9 @@ namespace MinhaRedeSocial.Infra.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AmigoId")
+                        .IsUnique();
+
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("Amizades");
@@ -73,6 +77,9 @@ namespace MinhaRedeSocial.Infra.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Data")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("PostagemId")
@@ -89,8 +96,7 @@ namespace MinhaRedeSocial.Infra.Migrations
 
                     b.HasIndex("PostagemId");
 
-                    b.HasIndex("UsuarioId")
-                        .IsUnique();
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Comentarios");
                 });
@@ -214,30 +220,30 @@ namespace MinhaRedeSocial.Infra.Migrations
 
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Amigos.Amigo", b =>
                 {
-                    b.HasOne("MinhaRedeSocial.Domain.Models.Amigos.Amizade", "Amizade")
-                        .WithOne("Amigo")
-                        .HasForeignKey("MinhaRedeSocial.Domain.Models.Amigos.Amigo", "Id")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
                     b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", "Usuario")
                         .WithOne("Amigo")
                         .HasForeignKey("MinhaRedeSocial.Domain.Models.Amigos.Amigo", "UsuarioId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
-                    b.Navigation("Amizade");
-
                     b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Amigos.Amizade", b =>
                 {
+                    b.HasOne("MinhaRedeSocial.Domain.Models.Amigos.Amigo", "Amigo")
+                        .WithOne("Amizade")
+                        .HasForeignKey("MinhaRedeSocial.Domain.Models.Amigos.Amizade", "AmigoId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
                     b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", "Usuario")
                         .WithMany("Amizades")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
+
+                    b.Navigation("Amigo");
 
                     b.Navigation("Usuario");
                 });
@@ -251,8 +257,8 @@ namespace MinhaRedeSocial.Infra.Migrations
                         .IsRequired();
 
                     b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", "Usuario")
-                        .WithOne("Comentario")
-                        .HasForeignKey("MinhaRedeSocial.Domain.Models.Postagens.Comentario", "UsuarioId")
+                        .WithMany("Comentarios")
+                        .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
@@ -302,9 +308,9 @@ namespace MinhaRedeSocial.Infra.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Amigos.Amizade", b =>
+            modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Amigos.Amigo", b =>
                 {
-                    b.Navigation("Amigo")
+                    b.Navigation("Amizade")
                         .IsRequired();
                 });
 
@@ -326,8 +332,7 @@ namespace MinhaRedeSocial.Infra.Migrations
 
                     b.Navigation("Amizades");
 
-                    b.Navigation("Comentario")
-                        .IsRequired();
+                    b.Navigation("Comentarios");
 
                     b.Navigation("Postagens");
 
