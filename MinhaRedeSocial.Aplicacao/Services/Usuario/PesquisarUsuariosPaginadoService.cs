@@ -23,7 +23,7 @@ public class PesquisarUsuariosPaginadoService : IPesquisarUsuariosPaginadoServic
     {
         try
         {
-            var resultado = await _usuarioRepository.PesquisarPaginado(request.NomeEmail, request.Page, request.PageSize, request.SortDirection, cancellationToken);
+            var resultado = await _usuarioRepository.PesquisarPaginado(request.NomeEmail, request.PesquisarUsuariosSort, request.Page, request.PageSize, request.SortDirection, cancellationToken);
 
             if (resultado is null || resultado.Source.Count < 1)
                 _logger.LogInformation("Nenhum usuário foi encontrado.");
