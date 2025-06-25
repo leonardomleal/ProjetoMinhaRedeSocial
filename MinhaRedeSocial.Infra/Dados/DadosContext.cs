@@ -33,10 +33,10 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         //});
 
         //Ignore propriedades.
+        modelBuilder.Entity<Usuario>().Ignore(x => x.Amigos);
         modelBuilder.Entity<Usuario>().Ignore(x => x.Amizades);
-        modelBuilder.Entity<Usuario>().Ignore(x => x.Amigo);
-        modelBuilder.Entity<Usuario>().Ignore(x => x.Solicitacaos);
         modelBuilder.Entity<Usuario>().Ignore(x => x.Solicitantes);
+        modelBuilder.Entity<Usuario>().Ignore(x => x.Solicitacaos);
         modelBuilder.Entity<Usuario>().Ignore(x => x.Postagens);
         modelBuilder.Entity<Usuario>().Ignore(x => x.Comentarios);
 
@@ -71,8 +71,8 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
 
         modelBuilder.Entity<Amizade>()
             .HasOne(x => x.Amigo)
-            .WithOne(x => x.Amizade)
-            .HasForeignKey<Amizade>(p => p.AmigoId)
+            .WithMany(x => x.Amizades)
+            .HasForeignKey(p => p.AmigoId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
         #endregion
@@ -87,23 +87,7 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         //Configurações chaves estrangeiras.
         modelBuilder.Entity<Amigo>()
             .HasOne(x => x.Usuario)
-            .WithOne(x => x.Amigo)
-            .HasForeignKey<Amigo>(p => p.UsuarioId)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.SetNull);
-        #endregion
-
-        #region Solicitante
-        //Ignore propriedades.
-        modelBuilder.Entity<Solicitante>().Ignore(x => x.Usuario);
-
-        //Definindo chave primária.
-        modelBuilder.Entity<Solicitante>().HasKey(x => x.Id);
-
-        //Configurações chaves estrangeiras.
-        modelBuilder.Entity<Solicitante>()
-            .HasOne(x => x.Usuario)
-            .WithMany(x => x.Solicitantes)
+            .WithMany(x => x.Amigos)
             .HasForeignKey(p => p.UsuarioId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
@@ -119,15 +103,31 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
 
         //Configurações chaves estrangeiras.
         modelBuilder.Entity<Solicitacao>()
-            .HasOne(x => x.Solicitante)
-            .WithOne(x => x.Solicitacao)
-            .HasForeignKey<Solicitacao>(p => p.SolicitanteId)
+            .HasOne(x => x.Usuario)
+            .WithMany(x => x.Solicitacaos)
+            .HasForeignKey(p => p.UsuarioId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<Solicitacao>()
+            .HasOne(x => x.Solicitante)
+            .WithMany(x => x.Solicitacoes)
+            .HasForeignKey(p => p.SolicitanteId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.SetNull); 
+        #endregion
+
+        #region Solicitante
+        //Ignore propriedades.
+        modelBuilder.Entity<Solicitante>().Ignore(x => x.Usuario);
+
+        //Definindo chave primária.
+        modelBuilder.Entity<Solicitante>().HasKey(x => x.Id);
+
+        //Configurações chaves estrangeiras.
+        modelBuilder.Entity<Solicitante>()
             .HasOne(x => x.Usuario)
-            .WithMany(x => x.Solicitacaos)
+            .WithMany(x => x.Solicitantes)
             .HasForeignKey(p => p.UsuarioId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);

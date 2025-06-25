@@ -11,5 +11,5 @@ public class Solicitante
     public Guid UsuarioId { get; set; }
 
     public virtual Usuario Usuario { get; set; }
-    public virtual Solicitacao Solicitacao { get; set; }
+    public virtual List<Solicitacao> Solicitacoes { get; set; }
 }

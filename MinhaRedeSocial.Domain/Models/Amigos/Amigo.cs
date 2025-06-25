@@ -12,5 +12,5 @@ public class Amigo
     public Guid UsuarioId { get; set; }
 
     public virtual Usuario Usuario { get; set; }
-    public virtual Amizade Amizade { get; set; }
+    public virtual List<Amizade> Amizades { get; set; }
 }

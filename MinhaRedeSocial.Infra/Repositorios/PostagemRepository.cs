@@ -20,6 +20,21 @@ public class PostagemRepository : IPostagemRepository
         _logger = logger;
     }
 
+    public async Task<Postagem> Cadastrar(Postagem postagem, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _context.Postagens.AddAsync(postagem);
+            await _context.SaveChangesAsync(cancellationToken);
+            return postagem;
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Ocorreu um erro ao cadastrar postagem.");
+            throw;
+        }
+    }
+
     public async Task<IPagedList<Postagem>> Buscar(BuscarPostagensDto request, CancellationToken cancellationToken)
     {
         try
