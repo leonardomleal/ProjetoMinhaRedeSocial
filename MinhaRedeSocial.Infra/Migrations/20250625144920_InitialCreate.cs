@@ -175,14 +175,12 @@ namespace MinhaRedeSocial.Infra.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Amigos_UsuarioId",
                 table: "Amigos",
-                column: "UsuarioId",
-                unique: true);
+                column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Amizades_AmigoId",
                 table: "Amizades",
-                column: "AmigoId",
-                unique: true);
+                column: "AmigoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Amizades_UsuarioId",
@@ -207,8 +205,7 @@ namespace MinhaRedeSocial.Infra.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Solicitacoes_SolicitanteId",
                 table: "Solicitacoes",
-                column: "SolicitanteId",
-                unique: true);
+                column: "SolicitanteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Solicitacoes_UsuarioId",
@@ -218,8 +215,7 @@ namespace MinhaRedeSocial.Infra.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Solicitantes_UsuarioId",
                 table: "Solicitantes",
-                column: "UsuarioId",
-                unique: true);
+                column: "UsuarioId");
         }
 
         /// <inheritdoc />

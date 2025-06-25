@@ -42,8 +42,7 @@ namespace MinhaRedeSocial.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId")
-                        .IsUnique();
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Amigos");
                 });
@@ -62,8 +61,7 @@ namespace MinhaRedeSocial.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AmigoId")
-                        .IsUnique();
+                    b.HasIndex("AmigoId");
 
                     b.HasIndex("UsuarioId");
 
@@ -144,8 +142,7 @@ namespace MinhaRedeSocial.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SolicitanteId")
-                        .IsUnique();
+                    b.HasIndex("SolicitanteId");
 
                     b.HasIndex("UsuarioId");
 
@@ -173,8 +170,7 @@ namespace MinhaRedeSocial.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId")
-                        .IsUnique();
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Solicitantes");
                 });
@@ -218,8 +214,8 @@ namespace MinhaRedeSocial.Infra.Migrations
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Amigos.Amigo", b =>
                 {
                     b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", "Usuario")
-                        .WithOne("Amigo")
-                        .HasForeignKey("MinhaRedeSocial.Domain.Models.Amigos.Amigo", "UsuarioId")
+                        .WithMany("Amigos")
+                        .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
@@ -229,8 +225,8 @@ namespace MinhaRedeSocial.Infra.Migrations
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Amigos.Amizade", b =>
                 {
                     b.HasOne("MinhaRedeSocial.Domain.Models.Amigos.Amigo", "Amigo")
-                        .WithOne("Amizade")
-                        .HasForeignKey("MinhaRedeSocial.Domain.Models.Amigos.Amizade", "AmigoId")
+                        .WithMany("Amizades")
+                        .HasForeignKey("AmigoId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
@@ -278,8 +274,8 @@ namespace MinhaRedeSocial.Infra.Migrations
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Solicitacoes.Solicitacao", b =>
                 {
                     b.HasOne("MinhaRedeSocial.Domain.Models.Solicitacoes.Solicitante", "Solicitante")
-                        .WithOne("Solicitacao")
-                        .HasForeignKey("MinhaRedeSocial.Domain.Models.Solicitacoes.Solicitacao", "SolicitanteId")
+                        .WithMany("Solicitacoes")
+                        .HasForeignKey("SolicitanteId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
@@ -297,8 +293,8 @@ namespace MinhaRedeSocial.Infra.Migrations
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Solicitacoes.Solicitante", b =>
                 {
                     b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", "Usuario")
-                        .WithOne("Solicitante")
-                        .HasForeignKey("MinhaRedeSocial.Domain.Models.Solicitacoes.Solicitante", "UsuarioId")
+                        .WithMany("Solicitantes")
+                        .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
@@ -307,8 +303,7 @@ namespace MinhaRedeSocial.Infra.Migrations
 
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Amigos.Amigo", b =>
                 {
-                    b.Navigation("Amizade")
-                        .IsRequired();
+                    b.Navigation("Amizades");
                 });
 
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Postagens.Postagem", b =>
@@ -318,14 +313,12 @@ namespace MinhaRedeSocial.Infra.Migrations
 
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Solicitacoes.Solicitante", b =>
                 {
-                    b.Navigation("Solicitacao")
-                        .IsRequired();
+                    b.Navigation("Solicitacoes");
                 });
 
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", b =>
                 {
-                    b.Navigation("Amigo")
-                        .IsRequired();
+                    b.Navigation("Amigos");
 
                     b.Navigation("Amizades");
 
@@ -335,8 +328,7 @@ namespace MinhaRedeSocial.Infra.Migrations
 
                     b.Navigation("Solicitacaos");
 
-                    b.Navigation("Solicitante")
-                        .IsRequired();
+                    b.Navigation("Solicitantes");
                 });
 #pragma warning restore 612, 618
         }
