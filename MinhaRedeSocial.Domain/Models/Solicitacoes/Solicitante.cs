@@ -10,6 +10,7 @@ public class Solicitante
     public string? Foto { get; set; }
     public Guid UsuarioId { get; set; }
 
-    public virtual Usuario Usuario { get; set; }
-    public virtual Solicitacao Solicitacao { get; set; }
+
+    public List<Solicitacao> Solicitacoes { get; set; } = [];
+    public Usuario Usuario { get; set; } = null!;
 }

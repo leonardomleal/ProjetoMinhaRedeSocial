@@ -117,6 +117,12 @@ public class UsuarioRepository : IUsuarioRepository
         {
             return await _context.Usuarios
                 .AsNoTracking()
+                .Include(x => x.Amigos)
+                .Include(x => x.Amigo)
+                .Include(x => x.Solicitacaos)
+                .Include(x => x.Solicitante)
+                .Include(x => x.Postagens)
+                .Include(x => x.Comentarios)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
         catch (DbUpdateException ex)

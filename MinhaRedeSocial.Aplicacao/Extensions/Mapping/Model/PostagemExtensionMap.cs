@@ -5,6 +5,15 @@ namespace MinhaRedeSocial.Aplicacao.Extensions.Mapping.Model;
 
 public static class PostagemExtensionMap
 {
+    public static CadastrarPostagemResponse MapToCadastrarPostagemResponse(this Postagem postagem)
+        => new()
+        {
+            Id = postagem.Id,
+            Data = postagem.Data,
+            Texto = postagem.Texto,
+            Permissao = postagem.Permissao
+        };
+
     public static List<BuscarPostagensResponse> MapToBuscarPostagensResponse(this List<Postagem> postagem)
         {
         var postagens = new List<BuscarPostagensResponse>();
