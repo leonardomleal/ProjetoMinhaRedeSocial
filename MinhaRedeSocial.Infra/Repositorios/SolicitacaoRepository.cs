@@ -32,14 +32,14 @@ public class SolicitacaoRepository : ISolicitacaoRepository
                         UsuarioId = solicitacao.UsuarioId,
                         SolicitanteId = solicitacao.SolicitanteId,
                         Mensagem = solicitacao.Mensagem,
-                        Solicitante = new Solicitante()
-                        {
-                            Id = solicitante.Id,
-                            Nome = solicitante.Nome,
-                            Apelido = solicitante.Apelido,
-                            Foto = solicitante.Foto,
-                            UsuarioId = solicitante.UsuarioId
-                        }
+                        //Solicitante = new Solicitante()
+                        //{
+                        //    Id = solicitante.Id,
+                        //    Nome = solicitante.Nome,
+                        //    Apelido = solicitante.Apelido,
+                        //    Foto = solicitante.Foto,
+                        //    UsuarioId = solicitante.UsuarioId
+                        //}
                     })
                 .Where(x => x.UsuarioId == id)
                 .ToListAsync(cancellationToken);

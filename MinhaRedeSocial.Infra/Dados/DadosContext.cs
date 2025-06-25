@@ -35,8 +35,8 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         //Ignore propriedades.
         //modelBuilder.Entity<Usuario>().Ignore(x => x.Amigos);
         //modelBuilder.Entity<Usuario>().Ignore(x => x.Amizades);
-        modelBuilder.Entity<Usuario>().Ignore(x => x.Solicitantes);
-        modelBuilder.Entity<Usuario>().Ignore(x => x.Solicitacaos);
+        //modelBuilder.Entity<Usuario>().Ignore(x => x.Solicitantes);
+        //modelBuilder.Entity<Usuario>().Ignore(x => x.Solicitacaos);
         modelBuilder.Entity<Usuario>().Ignore(x => x.Postagens);
         modelBuilder.Entity<Usuario>().Ignore(x => x.Comentarios);
 
@@ -53,34 +53,7 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         //);
         #endregion
 
-        #region Amizade
-        ////Ignore propriedades.
-        //modelBuilder.Entity<Amizade>().Ignore(x => x.Usuario);
-        //modelBuilder.Entity<Amizade>().Ignore(x => x.Amigo);
-
-        ////Definindo chave primária.
-        //modelBuilder.Entity<Amizade>().HasKey(x => x.Id);
-
-        ////Configurações chaves estrangeiras.
-        //modelBuilder.Entity<Amizade>()
-        //    .HasOne(x => x.Usuario)
-        //    .WithMany(x => x.Amizades)
-        //    .HasForeignKey(p => p.UsuarioId)
-        //    .IsRequired()
-        //    .OnDelete(DeleteBehavior.SetNull);
-
-        //modelBuilder.Entity<Amizade>()
-        //    .HasOne(x => x.Amigo)
-        //    .WithMany(x => x.Amizades)
-        //    .HasForeignKey(p => p.AmigoId)
-        //    .IsRequired()
-        //    .OnDelete(DeleteBehavior.SetNull);
-        #endregion
-
         #region Amigo
-        //Ignore propriedades.
-        //modelBuilder.Entity<Amigo>().Ignore(x => x.Usuario);
-
         //Definindo chave primária.
         modelBuilder.Entity<Amigo>().HasKey(x => x.Id);
 
@@ -94,41 +67,19 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         #endregion
 
         #region Solicitacao
-        //Ignore propriedades.
-        modelBuilder.Entity<Solicitacao>().Ignore(x => x.Usuario);
-        modelBuilder.Entity<Solicitacao>().Ignore(x => x.Solicitante);
-
         //Definindo chave primária.
         modelBuilder.Entity<Solicitacao>().HasKey(x => x.Id);
-
-        //Configurações chaves estrangeiras.
-        modelBuilder.Entity<Solicitacao>()
-            .HasOne(x => x.Usuario)
-            .WithMany(x => x.Solicitacaos)
-            .HasForeignKey(p => p.UsuarioId)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.SetNull);
-
-        modelBuilder.Entity<Solicitacao>()
-            .HasOne(x => x.Solicitante)
-            .WithMany(x => x.Solicitacoes)
-            .HasForeignKey(p => p.SolicitanteId)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.SetNull); 
         #endregion
 
         #region Solicitante
-        //Ignore propriedades.
-        modelBuilder.Entity<Solicitante>().Ignore(x => x.Usuario);
-
         //Definindo chave primária.
         modelBuilder.Entity<Solicitante>().HasKey(x => x.Id);
 
         //Configurações chaves estrangeiras.
         modelBuilder.Entity<Solicitante>()
             .HasOne(x => x.Usuario)
-            .WithMany(x => x.Solicitantes)
-            .HasForeignKey(p => p.UsuarioId)
+            .WithOne(x => x.Solicitante)
+            .HasForeignKey<Solicitante>(p => p.UsuarioId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
         #endregion

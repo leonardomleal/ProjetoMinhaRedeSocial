@@ -28,7 +28,10 @@ public class Usuario
 
     public List<Amigo> Amigos { get; } = [];
     public Amigo Amigo { get; } = null!;
-    public virtual List<Solicitacao> Solicitacaos { get; set; }
+    public List<Solicitacao> Solicitacaos { get; } = [];
+    public Solicitante Solicitante { get; } = null!;
+
+
     public virtual List<Solicitante> Solicitantes { get; set; }
     public virtual List<Postagem> Postagens {  get; set; }
     public virtual List<Comentario> Comentarios { get; set; }

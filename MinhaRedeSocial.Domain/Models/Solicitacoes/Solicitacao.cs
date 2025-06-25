@@ -5,10 +5,12 @@ namespace MinhaRedeSocial.Domain.Models.Solicitacoes;
 public class Solicitacao
 {
     public Guid Id { get; set; }
+    public DateTime Date { get; set; }
+    public string? Mensagem { get; set; }
     public Guid UsuarioId { get; set; }
     public Guid SolicitanteId { get; set; }
-    public string? Mensagem { get; set; }
 
-    public virtual Usuario Usuario { get; set; } 
-    public virtual Solicitante Solicitante { get; set; }
+
+    public Usuario Usuario { get; } = null!;
+    public Solicitante Solicitante { get; } = null!;
 }
