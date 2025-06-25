@@ -6,7 +6,7 @@ namespace MinhaRedeSocial.Aplicacao.Extensions.Mapping.Model;
 public static class PostagemExtensionMap
 {
     public static List<BuscarPostagensResponse> MapToBuscarPostagensResponse(this List<Postagem> postagem)
-    {
+        {
         var postagens = new List<BuscarPostagensResponse>();
 
         postagem.ForEach(x => postagens.Add(new()
