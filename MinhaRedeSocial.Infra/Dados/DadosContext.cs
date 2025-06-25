@@ -87,8 +87,8 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         //Configurações chaves estrangeiras.
         modelBuilder.Entity<Amigo>()
             .HasOne(x => x.Usuario)
-            .WithMany(x => x.Amigos)
-            .HasForeignKey(p => p.UsuarioId)
+            .WithOne(x => x.Amigo)
+            .HasForeignKey<Amigo>(p => p.UsuarioId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
         #endregion
