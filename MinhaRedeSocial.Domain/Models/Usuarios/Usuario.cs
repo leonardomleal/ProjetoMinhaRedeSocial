@@ -26,8 +26,7 @@ public class Usuario
     public string Senha { get; set; }
     public string? Foto { get; set; }
 
-    public virtual List<Amizade> Amizades { get; set; }
-    public virtual List<Amigo> Amigos { get; set; }
+    public List<Amigo> Amigos { get; } = [];
     public virtual List<Solicitacao> Solicitacaos { get; set; }
     public virtual List<Solicitante> Solicitantes { get; set; }
     public virtual List<Postagem> Postagens {  get; set; }

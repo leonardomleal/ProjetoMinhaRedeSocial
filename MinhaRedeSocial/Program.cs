@@ -24,6 +24,7 @@ builder.Services.AddScoped<IPesquisarUsuariosPaginadoService, PesquisarUsuariosP
 builder.Services.AddScoped<ICadastrarUsuarioService, CadastrarUsuarioService>();
 builder.Services.AddScoped<IBuscarSolicitacoesPorUsuarioService, BuscarSolicitacoesPorUsuarioService>();
 builder.Services.AddScoped<IBuscarPostagensService, BuscarPostagensService>();
+builder.Services.AddScoped<ICadastrarPostagemService, CadastrarPostagemService>();
 //Repositories
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ISolicitacaoRepository, SolicitacaoRepository>();

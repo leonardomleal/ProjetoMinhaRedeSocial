@@ -21,11 +21,13 @@ public class AmizadeRepository : IAmizadeRepository
     {
         try
         {
-            return await _context.Amizades
-                .AsNoTracking()
-                .Include(x => x.Amigo)
-                .Where(x => x.UsuarioId == id)
-                .ToListAsync(cancellationToken);
+            //return await _context.Amizades
+            //    .AsNoTracking()
+            //    .Include(x => x.Amigo)
+            //    .Where(x => x.UsuarioId == id)
+            //    .ToListAsync(cancellationToken);
+
+            return new List<Amizade>();
         }
         catch (DbUpdateException ex)
         {
