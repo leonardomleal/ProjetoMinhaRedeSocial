@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using MinhaRedeSocial.Aplicacao.Contratos.Request;
 using MinhaRedeSocial.Aplicacao.Contratos.Response;
 using MinhaRedeSocial.Aplicacao.Contratos.Services;
@@ -16,6 +17,7 @@ public class UsuarioController : ControllerBase
     private readonly IPesquisarUsuariosPaginadoService _pesquisarUsuariosPaginadoService;
     private readonly ICadastrarUsuarioService _cadastrarUsuarioService;
     private readonly IBuscarSolicitacoesPorUsuarioService _buscarSolicitacoesPorUsuarioService;
+    private readonly ICadastrarPostagemService _cadastrarPostagemService;
     private readonly ILogger<UsuarioController> _logger;
 
     public UsuarioController(
@@ -24,6 +26,7 @@ public class UsuarioController : ControllerBase
         IPesquisarUsuariosPaginadoService pesquisarUsuariosPaginadoService,
         ICadastrarUsuarioService cadastrarUsuarioService,
         IBuscarSolicitacoesPorUsuarioService buscarSolicitacoesPorUsuarioService,
+        ICadastrarPostagemService cadastrarPostagemService,
         ILogger<UsuarioController> logger)
     {
         _pesquisarUsuarioService = pesquisarUsuarioService;
@@ -31,6 +34,7 @@ public class UsuarioController : ControllerBase
         _pesquisarUsuariosPaginadoService = pesquisarUsuariosPaginadoService;
         _cadastrarUsuarioService = cadastrarUsuarioService;
         _buscarSolicitacoesPorUsuarioService = buscarSolicitacoesPorUsuarioService;
+        _cadastrarPostagemService = cadastrarPostagemService;
         _logger = logger;
     }
 
@@ -111,6 +115,30 @@ public class UsuarioController : ControllerBase
         {
             _logger.LogError(ex, $"Ocorreu um erro ao buscar solicitações de amizade para o usuário de Id {id}.");
             return Problem($"Ocorreu um erro ao buscar solicitações de amizade {ex}.", statusCode: (int)HttpStatusCode.InternalServerError);
+        }
+
+        return Ok(serviceResult);
+    }
+
+    [HttpPost("{id}/Postar")]
+    public async Task<IActionResult> CadastrarPostagem([FromRoute] Guid id, [FromBody] CadastrarPostagemRequest request, CancellationToken cancelationToken)
+    {
+        var serviceResult = new CadastrarPostagemResponse();
+
+        try
+        {
+            _logger.LogInformation($"Solicitação do endpoint [{nameof(CadastrarPostagem)}].", request);
+
+            var resultValidation = await new CadastrarPostagemRequestValidator().ValidateAsync(request, cancelationToken);
+            if (!resultValidation.IsValid)
+                return BadRequest($"{resultValidation.Errors.First().PropertyName} - {resultValidation.Errors.First().ErrorMessage}");
+
+            serviceResult = await _cadastrarPostagemService.Executar(id, request, cancelationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Ocorreu um erro ao cadastrar postagem para o usuário de Id {id}. ({request})");
+            return Problem($"Ocorreu um erro ao cadastrar postagem para o usuário de Id {id}. ({ex}).", statusCode: (int)HttpStatusCode.InternalServerError);
         }
 
         return Ok(serviceResult);
