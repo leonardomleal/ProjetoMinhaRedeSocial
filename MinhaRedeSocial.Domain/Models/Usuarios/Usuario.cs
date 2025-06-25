@@ -29,7 +29,7 @@ public class Usuario
     public virtual List<Amizade> Amizades { get; set; }
     public virtual Amigo Amigo { get; set; }
     public virtual List<Solicitacao> Solicitacaos { get; set; }
-    public virtual Solicitante Solicitante { get; set; }
+    public virtual List<Solicitante> Solicitantes { get; set; }
     public virtual List<Postagem> Postagens {  get; set; }
     public virtual List<Comentario> Comentarios { get; set; }
 }

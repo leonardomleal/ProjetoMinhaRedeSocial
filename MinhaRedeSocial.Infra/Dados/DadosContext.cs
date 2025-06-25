@@ -36,7 +36,7 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         modelBuilder.Entity<Usuario>().Ignore(x => x.Amizades);
         modelBuilder.Entity<Usuario>().Ignore(x => x.Amigo);
         modelBuilder.Entity<Usuario>().Ignore(x => x.Solicitacaos);
-        modelBuilder.Entity<Usuario>().Ignore(x => x.Solicitante);
+        modelBuilder.Entity<Usuario>().Ignore(x => x.Solicitantes);
         modelBuilder.Entity<Usuario>().Ignore(x => x.Postagens);
         modelBuilder.Entity<Usuario>().Ignore(x => x.Comentarios);
 
@@ -96,7 +96,6 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         #region Solicitante
         //Ignore propriedades.
         modelBuilder.Entity<Solicitante>().Ignore(x => x.Usuario);
-        modelBuilder.Entity<Solicitante>().Ignore(x => x.Solicitacao);
 
         //Definindo chave primária.
         modelBuilder.Entity<Solicitante>().HasKey(x => x.Id);
@@ -104,8 +103,8 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
         //Configurações chaves estrangeiras.
         modelBuilder.Entity<Solicitante>()
             .HasOne(x => x.Usuario)
-            .WithOne(x => x.Solicitante)
-            .HasForeignKey<Solicitante>(p => p.UsuarioId)
+            .WithMany(x => x.Solicitantes)
+            .HasForeignKey(p => p.UsuarioId)
             .IsRequired()
             .OnDelete(DeleteBehavior.SetNull);
         #endregion

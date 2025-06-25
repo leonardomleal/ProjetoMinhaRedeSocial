@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MinhaRedeSocial.Aplicacao.Contratos.Response;
+using MinhaRedeSocial.Aplicacao.Contratos.Request;
 using MinhaRedeSocial.Aplicacao.Contratos.Services;
 using System.Net;
 
@@ -18,23 +18,19 @@ public class PostagemController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> BuscarPostagens([FromRoute] Guid id, CancellationToken cancelationToken)
+    [HttpGet]
+    public async Task<IActionResult> BuscarPostagens([FromQuery] BuscarPostagensRequest request, CancellationToken cancelationToken)
     {
-        var serviceResult = new List<BuscarPostagensResponse>();
-
         try
         {
-            _logger.LogInformation($"Solicitação do endpoint [{nameof(BuscarPostagens)}].", id);
-            serviceResult = await _buscarPostagensService.Executar(id, cancelationToken);
+            _logger.LogInformation($"Solicitação do endpoint [{nameof(BuscarPostagens)}].", request);
+            var serviceResult = await _buscarPostagensService.Executar(request, cancelationToken);
+            return Ok(serviceResult);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Ocorreu um erro ao buscar postagens para o usuário {id}.");
-            return Problem($"Ocorreu um erro ao buscar postagens para o usuário {id}. ({ex})", statusCode: (int)HttpStatusCode.InternalServerError);
+            _logger.LogError(ex, $"Ocorreu um erro ao buscar postagens para o usuário {request.Id}.");
+            return Problem($"Ocorreu um erro ao buscar postagens para o usuário {request.Id}. ({ex})", statusCode: (int)HttpStatusCode.InternalServerError);
         }
-
-        return Ok(serviceResult);
     }
-
 }

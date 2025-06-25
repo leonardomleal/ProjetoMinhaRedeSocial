@@ -1,9 +1,11 @@
-﻿using MinhaRedeSocial.Domain.Models.Postagens;
+﻿using MinhaRedeSocial.Domain.Contratos.Dto.Postagem;
+using MinhaRedeSocial.Domain.Contratos.Paged;
+using MinhaRedeSocial.Domain.Models.Postagens;
 
 namespace MinhaRedeSocial.Domain.Contratos.Repositorios;
 
 public interface IPostagemRepository
 {
-    Task<List<Postagem>> Buscar(Guid id, CancellationToken cancellationToken);
-    Task<List<Postagem>> BuscarPostagensAmigos(List<Guid> ids, CancellationToken cancellationToken);
+    Task<IPagedList<Postagem>> Buscar(BuscarPostagensDto request, CancellationToken cancellationToken);
+    Task<IPagedList<Postagem>> BuscarComAmigos(BuscarPostagensDto request, CancellationToken cancellationToken);
 }

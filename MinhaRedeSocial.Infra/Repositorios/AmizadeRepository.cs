@@ -23,25 +23,7 @@ public class AmizadeRepository : IAmizadeRepository
         {
             return await _context.Amizades
                 .AsNoTracking()
-                .Join(_context.Amigos,
-                    amizade => amizade.AmigoId,
-                    amigo => amigo.Id,
-                    (amizade, amigo) => new Amizade()
-                    {
-                        Id = amizade.Id,
-                        UsuarioId = amizade.UsuarioId,
-                        AmigoId = amizade.Id,
-                        Amigo = new Amigo()
-                        {
-                            Id = amigo.Id,
-                            Nome = amigo.Nome,
-                            Email = amigo.Email,
-                            Apelido = amigo.Apelido,
-                            Foto = amigo.Foto,
-                            UsuarioId = amigo.UsuarioId
-                        }
-                    }
-                )
+                .Include(x => x.Amigo)
                 .Where(x => x.UsuarioId == id)
                 .ToListAsync(cancellationToken);
         }
