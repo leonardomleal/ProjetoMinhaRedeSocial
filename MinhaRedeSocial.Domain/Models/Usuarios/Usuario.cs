@@ -26,10 +26,10 @@ public class Usuario
     public string Senha { get; set; }
     public string? Foto { get; set; }
 
-    public List<Amigo> Amigos { get; } = [];
-    public Amigo Amigo { get; } = null!;
-    public List<Solicitacao> Solicitacaos { get; } = [];
-    public Solicitante Solicitante { get; } = null!;
-    public List<Postagem> Postagens { get; } = [];
-    public List<Comentario> Comentarios { get; } = [];
+    public List<Amigo> Amigos { get; set; } = [];
+    public Amigo Amigo { get; set; } = null!;
+    public List<Solicitacao> Solicitacaos { get; set; } = [];
+    public Solicitante Solicitante { get; set; } = null!;
+    public List<Postagem> Postagens { get; set; } = [];
+    public List<Comentario> Comentarios { get; set; } = [];
 }

@@ -23,24 +23,7 @@ public class SolicitacaoRepository : ISolicitacaoRepository
         {
             return await _context.Solicitacoes
                 .AsNoTracking()
-                .Join(_context.Solicitantes,
-                    solicitacao => solicitacao.SolicitanteId,
-                    solicitante => solicitante.Id,
-                    (solicitacao, solicitante) => new Solicitacao()
-                    {
-                        Id = solicitacao.Id,
-                        UsuarioId = solicitacao.UsuarioId,
-                        SolicitanteId = solicitacao.SolicitanteId,
-                        Mensagem = solicitacao.Mensagem,
-                        //Solicitante = new Solicitante()
-                        //{
-                        //    Id = solicitante.Id,
-                        //    Nome = solicitante.Nome,
-                        //    Apelido = solicitante.Apelido,
-                        //    Foto = solicitante.Foto,
-                        //    UsuarioId = solicitante.UsuarioId
-                        //}
-                    })
+                .Include(x => x.Solicitante)
                 .Where(x => x.UsuarioId == id)
                 .ToListAsync(cancellationToken);
         }

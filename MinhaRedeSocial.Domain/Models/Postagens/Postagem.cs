@@ -19,6 +19,6 @@ public class Postagem
     public PostagemPermissoes Permissao { get; set; }
     public Guid UsuarioId { get; set; }
 
-    public List<Comentario> Comentarios { get; } = [];
-    public Usuario Usuario { get; } = null!;
+    public List<Comentario> Comentarios { get; set; } = [];
+    public Usuario Usuario { get; set; } = null!;
 }

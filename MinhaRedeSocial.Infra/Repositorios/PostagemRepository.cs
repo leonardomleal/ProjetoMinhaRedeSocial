@@ -6,6 +6,7 @@ using MinhaRedeSocial.Domain.Contratos.Repositorios;
 using MinhaRedeSocial.Domain.Enums.Sorts;
 using MinhaRedeSocial.Domain.Models.Postagens;
 using MinhaRedeSocial.Infra.Dados;
+using System.Linq;
 
 namespace MinhaRedeSocial.Infra.Repositorios;
 
@@ -43,13 +44,14 @@ public class PostagemRepository : IPostagemRepository
             {
                 return request.BuscarPostagensSort switch
                 {
-                    BuscarPostagensSort.Data 
+                    BuscarPostagensSort.Data
                         => new PagedList<Postagem>(
                             await _context.Postagens
                                 .AsNoTracking()
                                 .Include(x => x.Comentarios)
                                 .Include(x => x.Usuario)
-                                .Where(x => x.UsuarioId == request.Id)
+                                .ThenInclude(x => x.Amigos)
+                                .Where(x => x.UsuarioId == request.Id || request.Amigos!.Contains(x.UsuarioId))
                                 .OrderByDescending(x => x.Data)
                                 .Skip((request.Page - 1) * request.PageSize)
                                 .Take(request.PageSize)
@@ -62,7 +64,8 @@ public class PostagemRepository : IPostagemRepository
                                 .AsNoTracking()
                                 .Include(x => x.Comentarios)
                                 .Include(x => x.Usuario)
-                                .Where(x => x.UsuarioId == request.Id)
+                                .ThenInclude(x => x.Amigos)
+                                .Where(x => x.UsuarioId == request.Id || request.Amigos!.Contains(x.UsuarioId))
                                 .OrderByDescending(x => x.Usuario.Nome)
                                 .Skip((request.Page - 1) * request.PageSize)
                                 .Take(request.PageSize)
@@ -74,7 +77,8 @@ public class PostagemRepository : IPostagemRepository
                             .AsNoTracking()
                             .Include(x => x.Comentarios)
                             .Include(x => x.Usuario)
-                            .Where(x => x.UsuarioId == request.Id)
+                            .ThenInclude(x => x.Amigos)
+                            .Where(x => x.UsuarioId == request.Id || request.Amigos!.Contains(x.UsuarioId))
                             .OrderByDescending(x => x.Data)
                             .Skip((request.Page - 1) * request.PageSize)
                             .Take(request.PageSize)
@@ -91,7 +95,8 @@ public class PostagemRepository : IPostagemRepository
                                 .AsNoTracking()
                                 .Include(x => x.Comentarios)
                                 .Include(x => x.Usuario)
-                                .Where(x => x.UsuarioId == request.Id)
+                                .ThenInclude(x => x.Amigos)
+                                .Where(x => x.UsuarioId == request.Id || request.Amigos!.Contains(x.UsuarioId))
                                 .OrderBy(x => x.Data)
                                 .Skip((request.Page - 1) * request.PageSize)
                                 .Take(request.PageSize)
@@ -104,7 +109,8 @@ public class PostagemRepository : IPostagemRepository
                                 .AsNoTracking()
                                 .Include(x => x.Comentarios)
                                 .Include(x => x.Usuario)
-                                .Where(x => x.UsuarioId == request.Id)
+                                .ThenInclude(x => x.Amigos)
+                                .Where(x => x.UsuarioId == request.Id || request.Amigos!.Contains(x.UsuarioId))
                                 .OrderBy(x => x.Usuario.Nome)
                                 .Skip((request.Page - 1) * request.PageSize)
                                 .Take(request.PageSize)
@@ -116,7 +122,8 @@ public class PostagemRepository : IPostagemRepository
                         .AsNoTracking()
                         .Include(x => x.Comentarios)
                         .Include(x => x.Usuario)
-                        .Where(x => x.UsuarioId == request.Id)
+                        .ThenInclude(x => x.Amigos)
+                        .Where(x => x.UsuarioId == request.Id || request.Amigos!.Contains(x.UsuarioId))
                         .OrderBy(x => x.Data)
                         .Skip((request.Page - 1) * request.PageSize)
                         .Take(request.PageSize)
@@ -131,101 +138,7 @@ public class PostagemRepository : IPostagemRepository
         }
     }
 
-    public async Task<IPagedList<Postagem>> BuscarComAmigos(BuscarPostagensDto request, CancellationToken cancellationToken)
-    {
-        if (request.SortDirection.Equals(SortDirection.Desc))
-        {
-            return request.BuscarPostagensSort switch
-            {
-                BuscarPostagensSort.Data
-                    => new PagedList<Postagem>(
-                        await _context.Postagens
-                            .AsNoTracking()
-                            .Include(x => x.Comentarios)
-                            .Include(x => x.Usuario)
-                            .Where(x => x.UsuarioId == request.Id || request.Amigos!.Contains(x.UsuarioId))
-                            .OrderByDescending(x => x.Data)
-                            .Skip((request.Page - 1) * request.PageSize)
-                            .Take(request.PageSize)
-                            .ToListAsync(cancellationToken),
-                    request.Page, request.PageSize, await BuscarTotalComAmigos(request, cancellationToken)),
-
-                BuscarPostagensSort.Nome
-                    => new PagedList<Postagem>(
-                        await _context.Postagens
-                            .AsNoTracking()
-                            .Include(x => x.Comentarios)
-                            .Include(x => x.Usuario)
-                            .Where(x => x.UsuarioId == request.Id || request.Amigos!.Contains(x.UsuarioId))
-                            .OrderByDescending(x => x.Usuario.Nome)
-                            .Skip((request.Page - 1) * request.PageSize)
-                            .Take(request.PageSize)
-                            .ToListAsync(cancellationToken),
-                    request.Page, request.PageSize, await BuscarTotalComAmigos(request, cancellationToken)),
-
-                _ => new PagedList<Postagem>(
-                    await _context.Postagens
-                        .AsNoTracking()
-                        .Include(x => x.Comentarios)
-                        .Include(x => x.Usuario)
-                        .Where(x => x.UsuarioId == request.Id || request.Amigos!.Contains(x.UsuarioId))
-                        .OrderByDescending(x => x.Data)
-                        .Skip((request.Page - 1) * request.PageSize)
-                        .Take(request.PageSize)
-                        .ToListAsync(cancellationToken),
-                    request.Page, request.PageSize, await BuscarTotalComAmigos(request, cancellationToken))
-            };
-        }
-
-        return request.BuscarPostagensSort switch
-        {
-            BuscarPostagensSort.Data
-                => new PagedList<Postagem>(
-                        await _context.Postagens
-                            .AsNoTracking()
-                            .Include(x => x.Comentarios)
-                            .Include(x => x.Usuario)
-                            .Where(x => x.UsuarioId == request.Id || request.Amigos!.Contains(x.UsuarioId))
-                            .OrderBy(x => x.Data)
-                            .Skip((request.Page - 1) * request.PageSize)
-                            .Take(request.PageSize)
-                            .ToListAsync(cancellationToken),
-                    request.Page, request.PageSize, await BuscarTotalComAmigos(request, cancellationToken)),
-
-            BuscarPostagensSort.Nome
-                => new PagedList<Postagem>(
-                        await _context.Postagens
-                            .AsNoTracking()
-                            .Include(x => x.Comentarios)
-                            .Include(x => x.Usuario)
-                            .Where(x => x.UsuarioId == request.Id || request.Amigos!.Contains(x.UsuarioId))
-                            .OrderBy(x => x.Usuario.Nome)
-                            .Skip((request.Page - 1) * request.PageSize)
-                            .Take(request.PageSize)
-                            .ToListAsync(cancellationToken),
-                    request.Page, request.PageSize, await BuscarTotalComAmigos(request, cancellationToken)),
-
-            _ => new PagedList<Postagem>(
-                await _context.Postagens
-                    .AsNoTracking()
-                    .Include(x => x.Comentarios)
-                    .Include(x => x.Usuario)
-                    .Where(x => x.UsuarioId == request.Id || request.Amigos!.Contains(x.UsuarioId))
-                    .OrderBy(x => x.Data)
-                    .Skip((request.Page - 1) * request.PageSize)
-                    .Take(request.PageSize)
-                    .ToListAsync(cancellationToken),
-                request.Page, request.PageSize, await BuscarTotalComAmigos(request, cancellationToken))
-        };
-    }
-
     private async Task<int> BuscarTotal(BuscarPostagensDto request, CancellationToken cancellationToken)
-        => await _context.Postagens
-            .AsNoTracking()
-            .Where(x => x.UsuarioId == request.Id)
-            .CountAsync(cancellationToken);
-
-    private async Task<int> BuscarTotalComAmigos(BuscarPostagensDto request, CancellationToken cancellationToken)
         => await _context.Postagens
             .AsNoTracking()
             .Where(x => x.UsuarioId == request.Id || request.Amigos!.Contains(x.UsuarioId))

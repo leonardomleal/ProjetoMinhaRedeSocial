@@ -12,16 +12,16 @@ namespace MinhaRedeSocial.Aplicacao.Services.Postagem;
 public class BuscarPostagensService : IBuscarPostagensService
 {
     private readonly IPostagemRepository _postagemRepository;
-    private readonly IAmizadeRepository _amizadeRepository;
+    private readonly IUsuarioRepository _usuarioRepository;
     private readonly ILogger<BuscarPostagensService> _logger;
 
     public BuscarPostagensService(
-        IPostagemRepository usuarioRepository,
-        IAmizadeRepository amizadeRepository,
+        IPostagemRepository postagemRepository,
+        IUsuarioRepository usuarioRepository,
         ILogger<BuscarPostagensService> logger)
     {
-        _postagemRepository = usuarioRepository;
-        _amizadeRepository = amizadeRepository;
+        _postagemRepository = postagemRepository;
+        _usuarioRepository = usuarioRepository;
         _logger = logger;
     }
 
@@ -29,30 +29,24 @@ public class BuscarPostagensService : IBuscarPostagensService
     {
         try
         {
-            var amizades = await _amizadeRepository.Buscar(request.Id, cancellationToken);
-            if (amizades is null || amizades.Count < 1)
+            var usuario = await _usuarioRepository.Buscar(request.Id, cancellationToken);
+            if (usuario is null)
             {
-                _logger.LogInformation($"Nenhuma amizade foi encontrada para o usuário {request.Id}.");
-
-                var postagens = await _postagemRepository.Buscar(request.MapToBuscarPostagensDto(), cancellationToken);
-                if (postagens is null || postagens.Source.Count < 1)
-                    _logger.LogInformation($"Nenhuma postagem foi encontrada para o usuário {request.Id}.");
-
-                return new PagedList<BuscarPostagensResponse>(
-                    postagens!.Source.MapToBuscarPostagensResponse(), 
-                    postagens.Page, postagens.PageSize, postagens.TotalCount);
+                _logger.LogError($"Usuário de Id {request.Id} não encontrado.");
+                throw new Exception($"Usuário de Id {request.Id} não encontrado.");
             }
-            else
-            {
-                var postagens = await _postagemRepository.BuscarComAmigos(request.MapToBuscarPostagensDto(
-                    amizades.Select(x => x.Amigo.UsuarioId).ToList()), cancellationToken);
-                if (postagens is null || postagens.Source.Count < 1)
-                    _logger.LogInformation($"Nenhuma postagem foi encontrada para o usuário {request.Id}.");
 
-                return new PagedList<BuscarPostagensResponse>(
-                    postagens!.Source.MapToBuscarPostagensResponse(), 
-                    postagens.Page, postagens.PageSize, postagens.TotalCount);
-            }
+            var amigos = usuario!.Amigos.Select(x => x.UsuarioId).ToList();
+            if (amigos is null || amigos.Count < 1)
+                _logger.LogInformation($"Nenhum amigo foi encontrado para o usuário de Id {request.Id}.");
+
+            var postagens = await _postagemRepository.Buscar(request.MapToBuscarPostagensDto(amigos), cancellationToken);
+            if (postagens is null || postagens.Source.Count < 1)
+                _logger.LogInformation($"Nenhuma postagem foi encontrada para o usuário {request.Id}.");
+
+            return new PagedList<BuscarPostagensResponse>(
+                postagens!.Source.MapToBuscarPostagensResponse(), 
+                postagens.Page, postagens.PageSize, postagens.TotalCount);
         }
         catch (Exception ex)
         {

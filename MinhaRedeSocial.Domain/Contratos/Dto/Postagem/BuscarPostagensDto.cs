@@ -11,6 +11,6 @@ public class BuscarPostagensDto : PagedModel
     }
 
     public Guid Id { get; set; }
-    public List<Guid>? Amigos { get; set; }
+    public List<Guid> Amigos { get; set; } = [];
     public BuscarPostagensSort BuscarPostagensSort { get; set; }
 }

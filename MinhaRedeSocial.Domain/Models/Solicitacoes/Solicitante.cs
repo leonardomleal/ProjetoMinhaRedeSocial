@@ -11,6 +11,6 @@ public class Solicitante
     public Guid UsuarioId { get; set; }
 
 
-    public List<Solicitacao> Solicitacoes { get; } = [];
-    public Usuario Usuario { get; } = null!;
+    public List<Solicitacao> Solicitacoes { get; set; } = [];
+    public Usuario Usuario { get; set; } = null!;
 }

@@ -11,6 +11,6 @@ public class Solicitacao
     public Guid SolicitanteId { get; set; }
 
 
-    public Usuario Usuario { get; } = null!;
-    public Solicitante Solicitante { get; } = null!;
+    public Usuario Usuario { get; set; } = null!;
+    public Solicitante Solicitante { get; set; } = null!;
 }

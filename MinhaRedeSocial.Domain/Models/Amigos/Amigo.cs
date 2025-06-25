@@ -11,6 +11,6 @@ public class Amigo
     public string? Foto { get; set; }
     public Guid UsuarioId { get; set; }
 
-    public List<Usuario> Usuarios { get; } = [];
+    public List<Usuario> Usuarios { get; set; } = [];
     public Usuario Usuario { get; set; } = null!;
 }

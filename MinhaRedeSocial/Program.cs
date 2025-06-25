@@ -29,7 +29,6 @@ builder.Services.AddScoped<ICadastrarPostagemService, CadastrarPostagemService>(
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ISolicitacaoRepository, SolicitacaoRepository>();
 builder.Services.AddScoped<IPostagemRepository, PostagemRepository>();
-builder.Services.AddScoped<IAmizadeRepository, AmizadeRepository>();
 
 var app = builder.Build();
 

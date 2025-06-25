@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MinhaRedeSocial.Aplicacao.Contratos.Request;
 using MinhaRedeSocial.Aplicacao.Contratos.Response;
 using MinhaRedeSocial.Aplicacao.Contratos.Services;

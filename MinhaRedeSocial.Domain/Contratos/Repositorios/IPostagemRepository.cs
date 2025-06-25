@@ -8,5 +8,4 @@ public interface IPostagemRepository
 {
     Task<Postagem> Cadastrar(Postagem postagem, CancellationToken cancellationToken);
     Task<IPagedList<Postagem>> Buscar(BuscarPostagensDto request, CancellationToken cancellationToken);
-    Task<IPagedList<Postagem>> BuscarComAmigos(BuscarPostagensDto request, CancellationToken cancellationToken);
 }
