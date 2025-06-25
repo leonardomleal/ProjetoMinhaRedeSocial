@@ -11,7 +11,7 @@ using MinhaRedeSocial.Infra.Dados;
 namespace MinhaRedeSocial.Infra.Migrations
 {
     [DbContext(typeof(DadosContext))]
-    [Migration("20250625144920_InitialCreate")]
+    [Migration("20250625201648_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -19,6 +19,21 @@ namespace MinhaRedeSocial.Infra.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
+
+            modelBuilder.Entity("AmigoUsuario", b =>
+                {
+                    b.Property<Guid>("AmigosId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("UsuariosId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AmigosId", "UsuariosId");
+
+                    b.HasIndex("UsuariosId");
+
+                    b.ToTable("AmigoUsuario");
+                });
 
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Amigos.Amigo", b =>
                 {
@@ -45,30 +60,10 @@ namespace MinhaRedeSocial.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
 
                     b.ToTable("Amigos");
-                });
-
-            modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Amigos.Amizade", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("AmigoId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("UsuarioId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AmigoId");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("Amizades");
                 });
 
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Postagens.Comentario", b =>
@@ -134,6 +129,9 @@ namespace MinhaRedeSocial.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Mensagem")
                         .HasColumnType("TEXT");
 
@@ -173,7 +171,8 @@ namespace MinhaRedeSocial.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
 
                     b.ToTable("Solicitantes");
                 });
@@ -214,99 +213,80 @@ namespace MinhaRedeSocial.Infra.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("AmigoUsuario", b =>
+                {
+                    b.HasOne("MinhaRedeSocial.Domain.Models.Amigos.Amigo", null)
+                        .WithMany()
+                        .HasForeignKey("AmigosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", null)
+                        .WithMany()
+                        .HasForeignKey("UsuariosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Amigos.Amigo", b =>
                 {
                     b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", "Usuario")
-                        .WithMany("Amigos")
-                        .HasForeignKey("UsuarioId")
+                        .WithOne("Amigo")
+                        .HasForeignKey("MinhaRedeSocial.Domain.Models.Amigos.Amigo", "UsuarioId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Amigos.Amizade", b =>
-                {
-                    b.HasOne("MinhaRedeSocial.Domain.Models.Amigos.Amigo", "Amigo")
-                        .WithMany("Amizades")
-                        .HasForeignKey("AmigoId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", "Usuario")
-                        .WithMany("Amizades")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.Navigation("Amigo");
 
                     b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Postagens.Comentario", b =>
                 {
-                    b.HasOne("MinhaRedeSocial.Domain.Models.Postagens.Postagem", "Postagem")
+                    b.HasOne("MinhaRedeSocial.Domain.Models.Postagens.Postagem", null)
                         .WithMany("Comentarios")
                         .HasForeignKey("PostagemId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", "Usuario")
+                    b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", null)
                         .WithMany("Comentarios")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Postagem");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Postagens.Postagem", b =>
                 {
-                    b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", "Usuario")
+                    b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", null)
                         .WithMany("Postagens")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Solicitacoes.Solicitacao", b =>
                 {
-                    b.HasOne("MinhaRedeSocial.Domain.Models.Solicitacoes.Solicitante", "Solicitante")
+                    b.HasOne("MinhaRedeSocial.Domain.Models.Solicitacoes.Solicitante", null)
                         .WithMany("Solicitacoes")
                         .HasForeignKey("SolicitanteId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", "Usuario")
+                    b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", null)
                         .WithMany("Solicitacaos")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Solicitante");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Solicitacoes.Solicitante", b =>
                 {
                     b.HasOne("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", "Usuario")
-                        .WithMany("Solicitantes")
-                        .HasForeignKey("UsuarioId")
+                        .WithOne("Solicitante")
+                        .HasForeignKey("MinhaRedeSocial.Domain.Models.Solicitacoes.Solicitante", "UsuarioId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Amigos.Amigo", b =>
-                {
-                    b.Navigation("Amizades");
                 });
 
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Postagens.Postagem", b =>
@@ -321,9 +301,8 @@ namespace MinhaRedeSocial.Infra.Migrations
 
             modelBuilder.Entity("MinhaRedeSocial.Domain.Models.Usuarios.Usuario", b =>
                 {
-                    b.Navigation("Amigos");
-
-                    b.Navigation("Amizades");
+                    b.Navigation("Amigo")
+                        .IsRequired();
 
                     b.Navigation("Comentarios");
 
@@ -331,7 +310,8 @@ namespace MinhaRedeSocial.Infra.Migrations
 
                     b.Navigation("Solicitacaos");
 
-                    b.Navigation("Solicitantes");
+                    b.Navigation("Solicitante")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

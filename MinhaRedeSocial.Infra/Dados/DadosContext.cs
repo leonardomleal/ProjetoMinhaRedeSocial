@@ -17,16 +17,7 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        #region Usuario
-        //Definindo chave primária.
-        modelBuilder.Entity<Usuario>().HasKey(x => x.Id);
-        #endregion
-
         #region Amigo
-        //Definindo chave primária.
-        modelBuilder.Entity<Amigo>().HasKey(x => x.Id);
-
-        //Configurações chaves estrangeiras.
         modelBuilder.Entity<Amigo>()
             .HasOne(x => x.Usuario)
             .WithOne(x => x.Amigo)
@@ -35,24 +26,13 @@ public class DadosContext(DbContextOptions<DadosContext> options) : DbContext(op
             .OnDelete(DeleteBehavior.SetNull);
         #endregion
 
-        #region Solicitacao
-        //Definindo chave primária.
-        modelBuilder.Entity<Solicitacao>().HasKey(x => x.Id);
-        #endregion
-
         #region Solicitante
-        //Definindo chave primária.
-        modelBuilder.Entity<Solicitante>().HasKey(x => x.Id);
-        #endregion
-
-        #region Comentario
-        //Definindo chave primária.
-        modelBuilder.Entity<Comentario>().HasKey(x => x.Id);
-        #endregion
-
-        #region Postagem
-        //Definindo chave primária.
-        modelBuilder.Entity<Postagem>().HasKey(x => x.Id);
+        modelBuilder.Entity<Solicitante>()
+            .HasOne(x => x.Usuario)
+            .WithOne(x => x.Solicitante)
+            .HasForeignKey<Solicitante>(p => p.UsuarioId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.SetNull);
         #endregion
     }
 }

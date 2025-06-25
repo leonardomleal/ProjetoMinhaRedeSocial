@@ -70,7 +70,7 @@ namespace MinhaRedeSocial.Infra.Migrations
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -95,28 +95,27 @@ namespace MinhaRedeSocial.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Amizades",
+                name: "AmigoUsuario",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UsuarioId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    AmigoId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    AmigosId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UsuariosId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Amizades", x => x.Id);
+                    table.PrimaryKey("PK_AmigoUsuario", x => new { x.AmigosId, x.UsuariosId });
                     table.ForeignKey(
-                        name: "FK_Amizades_Amigos_AmigoId",
-                        column: x => x.AmigoId,
+                        name: "FK_AmigoUsuario_Amigos_AmigosId",
+                        column: x => x.AmigosId,
                         principalTable: "Amigos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Amizades_Usuarios_UsuarioId",
-                        column: x => x.UsuarioId,
+                        name: "FK_AmigoUsuario_Usuarios_UsuariosId",
+                        column: x => x.UsuariosId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -137,13 +136,13 @@ namespace MinhaRedeSocial.Infra.Migrations
                         column: x => x.PostagemId,
                         principalTable: "Postagens",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comentarios_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -151,9 +150,10 @@ namespace MinhaRedeSocial.Infra.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Date = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Mensagem = table.Column<string>(type: "TEXT", nullable: true),
                     UsuarioId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    SolicitanteId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Mensagem = table.Column<string>(type: "TEXT", nullable: true)
+                    SolicitanteId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -163,29 +163,25 @@ namespace MinhaRedeSocial.Infra.Migrations
                         column: x => x.SolicitanteId,
                         principalTable: "Solicitantes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Solicitacoes_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Amigos_UsuarioId",
                 table: "Amigos",
-                column: "UsuarioId");
+                column: "UsuarioId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Amizades_AmigoId",
-                table: "Amizades",
-                column: "AmigoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Amizades_UsuarioId",
-                table: "Amizades",
-                column: "UsuarioId");
+                name: "IX_AmigoUsuario_UsuariosId",
+                table: "AmigoUsuario",
+                column: "UsuariosId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comentarios_PostagemId",
@@ -215,14 +211,15 @@ namespace MinhaRedeSocial.Infra.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Solicitantes_UsuarioId",
                 table: "Solicitantes",
-                column: "UsuarioId");
+                column: "UsuarioId",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Amizades");
+                name: "AmigoUsuario");
 
             migrationBuilder.DropTable(
                 name: "Comentarios");
