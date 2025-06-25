@@ -10,6 +10,6 @@ public class Comentario
     public Guid PostagemId { get; set; }
     public Guid UsuarioId { get; set; }
 
-    public virtual Usuario Usuario { get; set; }
-    public virtual Postagem Postagem { get; set; }
+    public Usuario Usuario { get; } = null!;
+    public Postagem Postagem { get; } = null!;
 }
