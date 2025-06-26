@@ -172,44 +172,54 @@ public class UsuarioRepository : IUsuarioRepository
                 return orderBy switch
                 {
                     PesquisarUsuariosSort.Id => new PagedList<Usuario>(
-                        await _context.Usuarios
+                        await _context.Usuarios                        
+                            .AsNoTracking()
+                            .Where(x => x.Nome.Contains(nomeEmail) || x.Email.Contains(nomeEmail))
                             .OrderByDescending(x => x.Id)
                             .Skip((pageNumber - 1) * pageSize)
                             .Take(pageSize)
                             .ToListAsync(cancellationToken),
-                        pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+                        pageNumber, pageSize, await PesquisarTotalPaginado(nomeEmail, cancellationToken)),
 
                     PesquisarUsuariosSort.Nome => new PagedList<Usuario>(
                         await _context.Usuarios
+                            .AsNoTracking()
+                            .Where(x => x.Nome.Contains(nomeEmail) || x.Email.Contains(nomeEmail))
                             .OrderByDescending(x => x.Nome)
                             .Skip((pageNumber - 1) * pageSize)
                             .Take(pageSize)
                             .ToListAsync(cancellationToken),
-                        pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+                        pageNumber, pageSize, await PesquisarTotalPaginado(nomeEmail, cancellationToken)),
 
                     PesquisarUsuariosSort.Email => new PagedList<Usuario>(
                         await _context.Usuarios
+                            .AsNoTracking()
+                            .Where(x => x.Nome.Contains(nomeEmail) || x.Email.Contains(nomeEmail))
                             .OrderByDescending(x => x.Email)
                             .Skip((pageNumber - 1) * pageSize)
                             .Take(pageSize)
                             .ToListAsync(cancellationToken),
-                        pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+                        pageNumber, pageSize, await PesquisarTotalPaginado(nomeEmail, cancellationToken)),
 
                     PesquisarUsuariosSort.DataNascimento => new PagedList<Usuario>(
                         await _context.Usuarios
+                            .AsNoTracking()
+                            .Where(x => x.Nome.Contains(nomeEmail) || x.Email.Contains(nomeEmail))
                             .OrderByDescending(x => x.DataNascimento)
                             .Skip((pageNumber - 1) * pageSize)
                             .Take(pageSize)
                             .ToListAsync(cancellationToken),
-                        pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+                        pageNumber, pageSize, await PesquisarTotalPaginado(nomeEmail, cancellationToken)),
 
                     _ => new PagedList<Usuario>(
                         await _context.Usuarios
+                            .AsNoTracking()
+                            .Where(x => x.Nome.Contains(nomeEmail) || x.Email.Contains(nomeEmail))
                             .OrderByDescending(x => x.Nome)
                             .Skip((pageNumber - 1) * pageSize)
                             .Take(pageSize)
                             .ToListAsync(cancellationToken),
-                        pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+                        pageNumber, pageSize, await PesquisarTotalPaginado(nomeEmail, cancellationToken)),
                 };
             }
 
@@ -217,43 +227,53 @@ public class UsuarioRepository : IUsuarioRepository
             {
                 PesquisarUsuariosSort.Id => new PagedList<Usuario>(
                     await _context.Usuarios
+                        .AsNoTracking()
+                        .Where(x => x.Nome.Contains(nomeEmail) || x.Email.Contains(nomeEmail))
                         .OrderBy(x => x.Id)
                         .Skip((pageNumber - 1) * pageSize)
                         .Take(pageSize)
                         .ToListAsync(cancellationToken),
-                    pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+                    pageNumber, pageSize, await PesquisarTotalPaginado(nomeEmail, cancellationToken)),
 
                 PesquisarUsuariosSort.Nome => new PagedList<Usuario>(
                     await _context.Usuarios
+                        .AsNoTracking()
+                        .Where(x => x.Nome.Contains(nomeEmail) || x.Email.Contains(nomeEmail))
                         .OrderBy(x => x.Nome)
                         .Skip((pageNumber - 1) * pageSize)
                         .Take(pageSize)
                         .ToListAsync(cancellationToken),
-                    pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+                    pageNumber, pageSize, await PesquisarTotalPaginado(nomeEmail, cancellationToken)),
 
                 PesquisarUsuariosSort.Email => new PagedList<Usuario>(
                     await _context.Usuarios
+                        .AsNoTracking()
+                        .Where(x => x.Nome.Contains(nomeEmail) || x.Email.Contains(nomeEmail))
                         .OrderBy(x => x.Email)
                         .Skip((pageNumber - 1) * pageSize)
                         .Take(pageSize)
                         .ToListAsync(cancellationToken),
-                    pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+                    pageNumber, pageSize, await PesquisarTotalPaginado(nomeEmail, cancellationToken)),
 
                 PesquisarUsuariosSort.DataNascimento => new PagedList<Usuario>(
                     await _context.Usuarios
+                        .AsNoTracking()
+                        .Where(x => x.Nome.Contains(nomeEmail) || x.Email.Contains(nomeEmail))
                         .OrderBy(x => x.DataNascimento)
                         .Skip((pageNumber - 1) * pageSize)
                         .Take(pageSize)
                         .ToListAsync(cancellationToken),
-                    pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+                    pageNumber, pageSize, await PesquisarTotalPaginado(nomeEmail, cancellationToken)),
 
                 _ => new PagedList<Usuario>(
                     await _context.Usuarios
+                        .AsNoTracking()
+                        .Where(x => x.Nome.Contains(nomeEmail) || x.Email.Contains(nomeEmail))
                         .OrderBy(x => x.Nome)
                         .Skip((pageNumber - 1) * pageSize)
                         .Take(pageSize)
                         .ToListAsync(cancellationToken),
-                    pageNumber, pageSize, await _context.Usuarios.CountAsync()),
+                    pageNumber, pageSize, await PesquisarTotalPaginado(nomeEmail, cancellationToken)),
             };
         }
         catch (DbUpdateException ex)
@@ -262,4 +282,10 @@ public class UsuarioRepository : IUsuarioRepository
             throw;
         }
     }
+
+    private async Task<int> PesquisarTotalPaginado(string nomeEmail, CancellationToken cancellationToken)
+        => await _context.Usuarios
+            .AsNoTracking()
+            .Where(x => x.Nome.Contains(nomeEmail) || x.Email.Contains(nomeEmail))
+            .CountAsync(cancellationToken);
 }
