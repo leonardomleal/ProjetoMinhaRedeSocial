@@ -2,6 +2,8 @@
 using MinhaRedeSocial.Aplicacao.Contratos.Request;
 using MinhaRedeSocial.Aplicacao.Contratos.Response;
 using MinhaRedeSocial.Aplicacao.Contratos.Services;
+using MinhaRedeSocial.Aplicacao.Services.Postagem;
+using MinhaRedeSocial.Domain.Enums;
 using System.Net;
 
 namespace MinhaRedeSocial.Api.Controllers;
@@ -14,6 +16,7 @@ public class PostagemController : ControllerBase
     private readonly IRegistrarCurtidaService _registrarCurtidaService;
     private readonly IRegistrarDescurtidaService _registrarDescurtidaService;
     private readonly ICadastrarComentarioService _cadastrarComentarioService;
+    private readonly IAlterarPermissaoService _alterarPermissaoService; 
     private readonly ILogger<PostagemController> _logger;
 
     public PostagemController(
@@ -21,12 +24,14 @@ public class PostagemController : ControllerBase
         IRegistrarCurtidaService registrarCurtidaService,
         IRegistrarDescurtidaService registrarDescurtidaService,
         ICadastrarComentarioService cadastrarComentarioService,
+        IAlterarPermissaoService alterarPermissaoService,
         ILogger<PostagemController> logger)
     {
         _buscarPostagensService = buscarPostagensService;
         _registrarCurtidaService = registrarCurtidaService;
         _registrarDescurtidaService = registrarDescurtidaService;
         _cadastrarComentarioService = cadastrarComentarioService;
+        _alterarPermissaoService = alterarPermissaoService;
         _logger = logger;
     }
 
@@ -97,6 +102,25 @@ public class PostagemController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, $"Ocorreu um erro ao cadastrar comentario para a postagem de Id {id}.");
+            return Problem(ex.StackTrace, statusCode: (int)HttpStatusCode.InternalServerError, title: ex.Message);
+        }
+
+        return Ok(serviceResult);
+    }
+
+    [HttpPatch("{id}/Permissao/{permissao}")]
+    public async Task<IActionResult> AlterarPermissao([FromRoute] Guid id, PostagemPermissoes permissao, CancellationToken cancelationToken)
+    {
+        var serviceResult = new BuscarPostagensResponse();
+
+        try
+        {
+            _logger.LogInformation($"Solicitação do endpoint [{nameof(AlterarPermissao)}].", id);
+            serviceResult = await _alterarPermissaoService.Executar(id, permissao, cancelationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Ocorreu um erro ao alterar permissão para a postagem de Id {id}.");
             return Problem(ex.StackTrace, statusCode: (int)HttpStatusCode.InternalServerError, title: ex.Message);
         }
 

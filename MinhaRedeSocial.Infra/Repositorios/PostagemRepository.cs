@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using MinhaRedeSocial.Domain.Contratos.Dto.Postagem;
 using MinhaRedeSocial.Domain.Contratos.Paged;
 using MinhaRedeSocial.Domain.Contratos.Repositorios;
+using MinhaRedeSocial.Domain.Enums;
 using MinhaRedeSocial.Domain.Enums.Sorts;
 using MinhaRedeSocial.Domain.Models.Postagens;
 using MinhaRedeSocial.Infra.Dados;
@@ -198,6 +199,30 @@ public class PostagemRepository : IPostagemRepository
         catch (DbUpdateException ex)
         {
             _logger.LogError(ex, $"Ocorreu um erro ao descurtir a postagem de ID {id}.");
+            throw;
+        }
+    }
+
+    public async Task<Postagem?> AlterarPermissao(Guid id, PostagemPermissoes permissao, CancellationToken cancellation)
+    {
+        try
+        {
+            var alteracao = await _context.Postagens
+                .Include(x => x.Comentarios)
+                .Include(x => x.Usuario)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (alteracao is not null)
+            {
+                alteracao.AlterarPermissao(permissao);
+                await _context.SaveChangesAsync(cancellation);
+            }
+
+            return alteracao;
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, $"Ocorreu um erro ao alterar permissão da postagem de ID {id}.");
             throw;
         }
     }

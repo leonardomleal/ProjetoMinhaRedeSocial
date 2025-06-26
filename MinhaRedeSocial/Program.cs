@@ -29,6 +29,7 @@ builder.Services.AddScoped<ICadastrarPostagemService, CadastrarPostagemService>(
 builder.Services.AddScoped<IRegistrarCurtidaService, RegistrarCurtidaService>();
 builder.Services.AddScoped<IRegistrarDescurtidaService, RegistrarDescurtidaService>();
 builder.Services.AddScoped<ICadastrarComentarioService, CadastrarComentarioService>();
+builder.Services.AddScoped<IAlterarPermissaoService, AlterarPermissaoService>();
 //Repositories
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ISolicitacaoRepository, SolicitacaoRepository>();
