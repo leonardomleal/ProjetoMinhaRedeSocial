@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="" readonly="0" foreign_keys="" case_sensitive_like="" temp_store="" wal_autocheckpoint="" synchronous=""/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2852"/><column_width id="4" width="0"/></tab_structure><tab_browse><table title="." custom_title="0" dock_id="6" table="0,0:"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000006fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500320100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500330100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500340100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500350100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500360100000000ffffffff0000011f00ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">SELECT * FROM Usuarios;
+
+--INSERT INTO Usuarios (Id, Nome, Email, Apelido, DataNascimento, Cep, Senha, Foto) VALUES ('600A6B1F-BB92-451A-ABDD-FB9CE117257F', 'Leonardo Leal', 'leonardo@cwi.com.br', 'Léo', '1992-04-15T00:00:00', '93000000', '1234', 'foto1.jpg');
+--INSERT INTO Usuarios (Id, Nome, Email, Apelido, DataNascimento, Cep, Senha, Foto) VALUES ('BD15A30F-E400-4BC9-A294-9DE90C6053C3', 'Vinicius', 'vinicius@cwi.com.br', 'Vini', '1995-04-15T00:00:00', '93999999', '1111', null);
+--INSERT INTO Usuarios (Id, Nome, Email, Apelido, DataNascimento, Cep, Senha, Foto) VALUES ('A3608A24-671C-4161-B145-A3A4880D77B4', 'João', 'joao@cwi.com.br', null, '1991-04-15T00:00:00', '93123456', '2222', 'foto2.jpg');
+--INSERT INTO Usuarios (Id, Nome, Email, Apelido, DataNascimento, Cep, Senha, Foto) VALUES ('7C5F466A-EEBA-43BF-80AF-34605DD1C5E4', 'Rômulo', 'romulo@cwi.com.br', null, '1990-04-15T00:00:00', '93123123', '3333', null);
+--INSERT INTO Usuarios (Id, Nome, Email, Apelido, DataNascimento, Cep, Senha, Foto) VALUES ('F009F4DA-AD9C-4BE9-8610-B31642380BD6', 'Renan', 'renan@cwi.com.br', null, '1994-04-15T00:00:00', '93654321', '4444', null);
+--INSERT INTO Usuarios (Id, Nome, Email, Apelido, DataNascimento, Cep, Senha, Foto) VALUES ('98333FAD-CDE8-48E1-86BD-0BDCBBED6BAD', 'Fulano', 'fulano@cwi.com.br', null, '1993-04-15T00:00:00', '93456456', '5555', null);
+
+SELECT * FROM Solicitantes;
+
+--INSERT INTO Solicitantes (Id, Nome, Apelido, Foto, UsuarioId) VALUES ('12F5B206-C39C-4CEA-BBAA-95D138BDB215', 'Vinicius', 'Vini', NULL, 'BD15A30F-E400-4BC9-A294-9DE90C6053C3');
+--INSERT INTO Solicitantes (Id, Nome, Apelido, Foto, UsuarioId) VALUES ('4DC888C1-6C82-4F95-B3F8-9197E7C90104', 'Fulano', NULL, NULL, '98333FAD-CDE8-48E1-86BD-0BDCBBED6BAD');
+
+SELECT * FROM Solicitacoes;
+
+--INSERT INTO Solicitacoes (Id, Date, Mensagem, UsuarioId, SolicitanteId) VALUES ('B059809E-3683-4362-AAE2-89C41F776374', '2025-06-25T12:00:000', null, '600A6B1F-BB92-451A-ABDD-FB9CE117257F', '12F5B206-C39C-4CEA-BBAA-95D138BDB215');
+--INSERT INTO Solicitacoes (Id, Date, Mensagem, UsuarioId, SolicitanteId) VALUES ('B42D3C8F-C063-4E24-A1DB-A08D732A0FB8', '2025-06-25T13:00:000', 'Oi, me add?', 'BD15A30F-E400-4BC9-A294-9DE90C6053C3', '4DC888C1-6C82-4F95-B3F8-9197E7C90104');
+--INSERT INTO Solicitacoes (Id, Date, Mensagem, UsuarioId, SolicitanteId) VALUES ('D2352A73-CC76-48C1-87CA-751304A0163B', '2025-06-25T12:00:000', null, 'F009F4DA-AD9C-4BE9-8610-B31642380BD6', '12F5B206-C39C-4CEA-BBAA-95D138BDB215');
+
+SELECT * FROM Amigos;
+
+--INSERT INTO Amigos (Id, Nome, Email, Apelido, Foto, UsuarioId) VALUES ('055ACE2A-5E72-4482-BF73-370148202F1B', 'João', 'joao@cwi.com.br', null, 'foto2.jpg', 'A3608A24-671C-4161-B145-A3A4880D77B4');
+--INSERT INTO Amigos (Id, Nome, Email, Apelido, Foto, UsuarioId) VALUES ('7D60E723-1859-4986-99BF-4304B4E135B9', 'Rômulo', 'romulo@cwi.com.br', null, null, '7C5F466A-EEBA-43BF-80AF-34605DD1C5E4');
+--INSERT INTO Amigos (Id, Nome, Email, Apelido, Foto, UsuarioId) VALUES ('AA512B64-8B80-4464-B28B-B0B6E5DA3596', 'Vinicius', 'vinicius@cwi.com.br', 'Vini', null, 'BD15A30F-E400-4BC9-A294-9DE90C6053C3');
+
+--INSERT INTO Amigos (Id, Nome, Email, Apelido, Foto, UsuarioId) VALUES ('11ADE0CA-2B58-4C45-A940-96A09AF5A59C', 'Renan', 'renan@cwi.com.br', null, null, 'F009F4DA-AD9C-4BE9-8610-B31642380BD6');
+--INSERT INTO Amigos (Id, Nome, Email, Apelido, Foto, UsuarioId) VALUES ('88030CF2-EEAA-4FC0-9657-044F37D02642', 'Fulano', 'fulano@cwi.com.br', null, null, '98333FAD-CDE8-48E1-86BD-0BDCBBED6BAD');
+--INSERT INTO Amigos (Id, Nome, Email, Apelido, Foto, UsuarioId) VALUES ('CCEA693E-54E6-41E3-81E5-2EFFC617C4A2', 'Leonardo Leal', 'leonardo@cwi.com.br', 'Léo', 'foto1.jpg', '600A6B1F-BB92-451A-ABDD-FB9CE117257F');
+
+SELECT * FROM AmigoUsuario;
+
+--INSERT INTO AmigoUsuario (UsuariosId, AmigosId) VALUES ('BD15A30F-E400-4BC9-A294-9DE90C6053C3', '055ACE2A-5E72-4482-BF73-370148202F1B');
+--INSERT INTO AmigoUsuario (UsuariosId, AmigosId) VALUES ('BD15A30F-E400-4BC9-A294-9DE90C6053C3', '7D60E723-1859-4986-99BF-4304B4E135B9');
+--INSERT INTO AmigoUsuario (UsuariosId, AmigosId) VALUES ('A3608A24-671C-4161-B145-A3A4880D77B4', 'AA512B64-8B80-4464-B28B-B0B6E5DA3596');
+--INSERT INTO AmigoUsuario (UsuariosId, AmigosId) VALUES ('7C5F466A-EEBA-43BF-80AF-34605DD1C5E4', 'AA512B64-8B80-4464-B28B-B0B6E5DA3596');
+
+--INSERT INTO AmigoUsuario (UsuariosId, AmigosId) VALUES ('600A6B1F-BB92-451A-ABDD-FB9CE117257F', '11ADE0CA-2B58-4C45-A940-96A09AF5A59C');
+--INSERT INTO AmigoUsuario (UsuariosId, AmigosId) VALUES ('600A6B1F-BB92-451A-ABDD-FB9CE117257F', '88030CF2-EEAA-4FC0-9657-044F37D02642');
+--INSERT INTO AmigoUsuario (UsuariosId, AmigosId) VALUES ('F009F4DA-AD9C-4BE9-8610-B31642380BD6', 'CCEA693E-54E6-41E3-81E5-2EFFC617C4A2');
+--INSERT INTO AmigoUsuario (UsuariosId, AmigosId) VALUES ('98333FAD-CDE8-48E1-86BD-0BDCBBED6BAD', 'CCEA693E-54E6-41E3-81E5-2EFFC617C4A2');
+
+SELECT * FROM Postagens;
+
+--INSERT INTO Postagens (Id, Data, Texto, Curtidas, Permissao, UsuarioId) VALUES ('2465C7F3-CA56-4F9B-A63C-63B722A76FE4', '2025-06-24T10:00:00', 'Meu primeiro post! kkkk', 0, 1, '600A6B1F-BB92-451A-ABDD-FB9CE117257F');
+--INSERT INTO Postagens (Id, Data, Texto, Curtidas, Permissao, UsuarioId) VALUES ('2E9EE2A7-3106-4F3D-B329-4B64D8E26DEE', '2025-06-24T12:00:00', 'Meu primeiro post! kkkk', 0, 1, 'BD15A30F-E400-4BC9-A294-9DE90C6053C3');
+--INSERT INTO Postagens (Id, Data, Texto, Curtidas, Permissao, UsuarioId) VALUES ('F8EA7DB1-4395-4527-B5C1-B2F8A9C411E9', '2025-06-24T13:00:00', 'Meu primeiro post! kkkk', 0, 1, '98333FAD-CDE8-48E1-86BD-0BDCBBED6BAD');
+--INSERT INTO Postagens (Id, Data, Texto, Curtidas, Permissao, UsuarioId) VALUES ('A7A50BCB-1A84-45B3-9490-E31BACEFCCB0', '2025-06-24T14:00:00', 'Meu segundo post! kkkk', 0, 1, '600A6B1F-BB92-451A-ABDD-FB9CE117257F');
+
+SELECT * FROM Comentarios;
+
+--INSERT INTO Comentarios (Id, Data, Texto, PostagemId, UsuarioId)  VALUES ('20241129-9247-41A9-9E7E-57EC3AA33B57', '2025-06-24T10:30:00', 'Comentario 01', '2465C7F3-CA56-4F9B-A63C-63B722A76FE4', 'F009F4DA-AD9C-4BE9-8610-B31642380BD6');
+--INSERT INTO Comentarios (Id, Data, Texto, PostagemId, UsuarioId)  VALUES ('58595CE6-009D-4E9D-9089-E45A0BDB0E41', '2025-06-24T11:00:00', 'Comentario 02', '2465C7F3-CA56-4F9B-A63C-63B722A76FE4', '98333FAD-CDE8-48E1-86BD-0BDCBBED6BAD');
+--INSERT INTO Comentarios (Id, Data, Texto, PostagemId, UsuarioId)  VALUES ('8C9A0093-A665-416F-806A-375E7A552AC8', '2025-06-24T11:00:00', 'Comentario 03', '2465C7F3-CA56-4F9B-A63C-63B722A76FE4', '98333FAD-CDE8-48E1-86BD-0BDCBBED6BAD');
+--INSERT INTO Comentarios (Id, Data, Texto, PostagemId, UsuarioId)  VALUES ('0A5A879C-ABB0-48E5-B5B0-F420F58DCA8D', '2025-06-24T11:02:00', 'Comentario 01', '2E9EE2A7-3106-4F3D-B329-4B64D8E26DEE', 'A3608A24-671C-4161-B145-A3A4880D77B4');
+--INSERT INTO Comentarios (Id, Data, Texto, PostagemId, UsuarioId)  VALUES ('18D34C5F-1B57-4531-BE23-DA10B0B0B7FD', '2025-06-24T13:02:00', 'Comentario 01', 'F8EA7DB1-4395-4527-B5C1-B2F8A9C411E9', '600A6B1F-BB92-451A-ABDD-FB9CE117257F');
+--INSERT INTO Comentarios (Id, Data, Texto, PostagemId, UsuarioId)  VALUES ('757452EE-3EFE-4575-BC6D-22CDBCB16A57', '2025-06-24T13:05:00', 'Comentando de novo para o mesmo post', 'F8EA7DB1-4395-4527-B5C1-B2F8A9C411E9', '600A6B1F-BB92-451A-ABDD-FB9CE117257F');
+
+
+
+--------------------------------------------------------------------------------------------------------
+
+
+
+SELECT 
+	Usuarios.Nome,
+	Postagens.Texto,
+	Postagens.Data,
+	Postagens.Curtidas,
+	(SELECT COUNT(Comentarios.Id) FROM Comentarios WHERE Comentarios.PostagemId = Postagens.Id) AS Comentarios
+FROM 
+	Postagens
+INNER JOIN
+	Usuarios ON Postagens.UsuarioId = Usuarios.Id
+
+
+
+
+
+
+</sql><current_tab id="0"/></tab_sql></sqlb_project>

@@ -20,6 +20,7 @@ public static class PostagemExtensionMap
 
         postagem.ForEach(x => postagens.Add(new()
         {
+            Id = x.Id,
             Data = x.Data,
             Nome = x.Usuario.Nome,
             Foto = x.Usuario.Foto,
@@ -30,4 +31,16 @@ public static class PostagemExtensionMap
 
         return postagens;
     }
+
+    public static BuscarPostagensResponse MapToBuscarPostagensResponse(this Postagem postagem)
+        => new()
+        {
+            Id = postagem.Id,
+            Data = postagem.Data,
+            Nome = postagem.Usuario.Nome,
+            Foto = postagem.Usuario.Foto,
+            Texto = postagem.Texto,
+            Curtidas = postagem.Curtidas,
+            Comentarios = postagem.Comentarios.Count
+        };
 }

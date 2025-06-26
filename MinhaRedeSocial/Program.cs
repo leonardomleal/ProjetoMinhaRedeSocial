@@ -25,6 +25,8 @@ builder.Services.AddScoped<ICadastrarUsuarioService, CadastrarUsuarioService>();
 builder.Services.AddScoped<IBuscarSolicitacoesPorUsuarioService, BuscarSolicitacoesPorUsuarioService>();
 builder.Services.AddScoped<IBuscarPostagensService, BuscarPostagensService>();
 builder.Services.AddScoped<ICadastrarPostagemService, CadastrarPostagemService>();
+builder.Services.AddScoped<IRegistrarCurtidaService, RegistrarCurtidaService>();
+builder.Services.AddScoped<IRegistrarDescurtidaService, RegistrarDescurtidaService>();
 //Repositories
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ISolicitacaoRepository, SolicitacaoRepository>();

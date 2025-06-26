@@ -5,8 +5,8 @@ using MinhaRedeSocial.Domain.Contratos.Paged;
 using MinhaRedeSocial.Domain.Contratos.Repositorios;
 using MinhaRedeSocial.Domain.Enums.Sorts;
 using MinhaRedeSocial.Domain.Models.Postagens;
+using MinhaRedeSocial.Domain.Models.Usuarios;
 using MinhaRedeSocial.Infra.Dados;
-using System.Linq;
 
 namespace MinhaRedeSocial.Infra.Repositorios;
 
@@ -36,7 +36,24 @@ public class PostagemRepository : IPostagemRepository
         }
     }
 
-    public async Task<IPagedList<Postagem>> Buscar(BuscarPostagensDto request, CancellationToken cancellationToken)
+    public async Task<Postagem?> Buscar(Guid id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await _context.Postagens
+                .AsNoTracking()
+                .Include(x => x.Comentarios)
+                .Include(x => x.Usuario)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, $"Ocorreu um erro ao buscar postagem de id {id}.");
+            throw;
+        }
+    }
+
+    public async Task<IPagedList<Postagem>> BuscarFeed(BuscarPostagensDto request, CancellationToken cancellationToken)
     {
         try
         {
@@ -133,7 +150,55 @@ public class PostagemRepository : IPostagemRepository
         }
         catch (DbUpdateException ex)
         {
-            _logger.LogError(ex, $"Ocorreu um erro ao buscar postagens do usuário de Id {request.Id}.");
+            _logger.LogError(ex, $"Ocorreu um erro ao buscar feed do usuário de Id {request.Id}.");
+            throw;
+        }
+    }
+
+    public async Task<Postagem?> Curtir(Guid id, CancellationToken cancellation)
+    {
+        try
+        {
+            var alteracao = await _context.Postagens
+                .Include(x => x.Comentarios)
+                .Include(x => x.Usuario)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (alteracao is not null)
+            {
+                alteracao.Curtir();
+                await _context.SaveChangesAsync(cancellation);
+            }
+
+            return alteracao;
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, $"Ocorreu um erro ao curtir a postagem de ID {id}.");
+            throw;
+        }
+    }
+
+    public async Task<Postagem?> Descurtir(Guid id, CancellationToken cancellation)
+    {
+        try
+        {
+            var alteracao = await _context.Postagens
+                .Include(x => x.Comentarios)
+                .Include(x => x.Usuario)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (alteracao is not null)
+            {
+                alteracao.Descurtir();
+                await _context.SaveChangesAsync(cancellation);
+            }
+
+            return alteracao;
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, $"Ocorreu um erro ao descurtir a postagem de ID {id}.");
             throw;
         }
     }

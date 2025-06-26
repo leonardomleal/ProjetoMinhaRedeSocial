@@ -7,5 +7,8 @@ namespace MinhaRedeSocial.Domain.Contratos.Repositorios;
 public interface IPostagemRepository
 {
     Task<Postagem> Cadastrar(Postagem postagem, CancellationToken cancellationToken);
-    Task<IPagedList<Postagem>> Buscar(BuscarPostagensDto request, CancellationToken cancellationToken);
+    Task<Postagem?> Buscar(Guid id, CancellationToken cancellationToken);
+    Task<IPagedList<Postagem>> BuscarFeed(BuscarPostagensDto request, CancellationToken cancellationToken);
+    Task<Postagem?> Curtir(Guid id, CancellationToken cancellation);
+    Task<Postagem?> Descurtir(Guid id, CancellationToken cancellation);
 }

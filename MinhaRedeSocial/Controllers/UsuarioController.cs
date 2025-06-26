@@ -59,7 +59,7 @@ public class UsuarioController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, $"Ocorreu um erro ao cadastrar usuário {request}.");
-            return Problem($"Ocorreu um erro ao cadastrar usuário {ex}.", statusCode: (int)HttpStatusCode.InternalServerError);
+            return Problem(ex.StackTrace, statusCode: (int)HttpStatusCode.InternalServerError, title: ex.Message);
         }
 
         return Ok(serviceResult);
@@ -78,7 +78,7 @@ public class UsuarioController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, $"Ocorreu um erro ao buscar usuário de Id {id}.");
-            return Problem($"Ocorreu um erro ao buscar usuário {ex}.", statusCode: (int)HttpStatusCode.InternalServerError);
+            return Problem(ex.StackTrace, statusCode: (int)HttpStatusCode.InternalServerError, title: ex.Message);
         }
 
         return Ok(serviceResult);
@@ -96,7 +96,7 @@ public class UsuarioController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, $"Ocorreu um erro ao pesquisar usuários. (Filtro: {request})");
-            return Problem($"Ocorreu um erro ao pesquisar usuários {ex}.", statusCode: (int)HttpStatusCode.InternalServerError);
+            return Problem(ex.StackTrace, statusCode: (int)HttpStatusCode.InternalServerError, title: ex.Message);
         }
     }
 
@@ -113,7 +113,7 @@ public class UsuarioController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, $"Ocorreu um erro ao buscar solicitações de amizade para o usuário de Id {id}.");
-            return Problem($"Ocorreu um erro ao buscar solicitações de amizade {ex}.", statusCode: (int)HttpStatusCode.InternalServerError);
+            return Problem(ex.StackTrace, statusCode: (int)HttpStatusCode.InternalServerError, title: ex.Message);
         }
 
         return Ok(serviceResult);
@@ -137,7 +137,7 @@ public class UsuarioController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, $"Ocorreu um erro ao cadastrar postagem para o usuário de Id {id}. ({request})");
-            return Problem($"Ocorreu um erro ao cadastrar postagem para o usuário de Id {id}. ({ex}).", statusCode: (int)HttpStatusCode.InternalServerError);
+            return Problem(ex.StackTrace, statusCode: (int)HttpStatusCode.InternalServerError, title: ex.Message);
         }
 
         return Ok(serviceResult);

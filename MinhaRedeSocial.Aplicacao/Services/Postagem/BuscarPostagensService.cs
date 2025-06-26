@@ -40,7 +40,7 @@ public class BuscarPostagensService : IBuscarPostagensService
             if (amigos is null || amigos.Count < 1)
                 _logger.LogInformation($"Nenhum amigo foi encontrado para o usuário de Id {request.Id}.");
 
-            var postagens = await _postagemRepository.Buscar(request.MapToBuscarPostagensDto(amigos), cancellationToken);
+            var postagens = await _postagemRepository.BuscarFeed(request.MapToBuscarPostagensDto(amigos), cancellationToken);
             if (postagens is null || postagens.Source.Count < 1)
                 _logger.LogInformation($"Nenhuma postagem foi encontrada para o usuário {request.Id}.");
 
