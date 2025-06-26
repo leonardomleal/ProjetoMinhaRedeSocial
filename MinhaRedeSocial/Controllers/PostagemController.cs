@@ -13,17 +13,20 @@ public class PostagemController : ControllerBase
     private readonly IBuscarPostagensService _buscarPostagensService;
     private readonly IRegistrarCurtidaService _registrarCurtidaService;
     private readonly IRegistrarDescurtidaService _registrarDescurtidaService;
+    private readonly ICadastrarComentarioService _cadastrarComentarioService;
     private readonly ILogger<PostagemController> _logger;
 
     public PostagemController(
         IBuscarPostagensService buscarPostagensService,
         IRegistrarCurtidaService registrarCurtidaService,
         IRegistrarDescurtidaService registrarDescurtidaService,
+        ICadastrarComentarioService cadastrarComentarioService,
         ILogger<PostagemController> logger)
     {
         _buscarPostagensService = buscarPostagensService;
         _registrarCurtidaService = registrarCurtidaService;
         _registrarDescurtidaService = registrarDescurtidaService;
+        _cadastrarComentarioService = cadastrarComentarioService;
         _logger = logger;
     }
 
@@ -75,6 +78,25 @@ public class PostagemController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, $"Ocorreu um erro ao registrar descurtida para a postagem de Id {id}.");
+            return Problem(ex.StackTrace, statusCode: (int)HttpStatusCode.InternalServerError, title: ex.Message);
+        }
+
+        return Ok(serviceResult);
+    }
+
+    [HttpPost("{id}/comentar")]
+    public async Task<IActionResult> CadastrarComentario([FromRoute] Guid id, [FromBody] CadastrarComentarioRequest request, CancellationToken cancelationToken)
+    {
+        var serviceResult = new CadastrarComentarioResponse();
+
+        try
+        {
+            _logger.LogInformation($"Solicitação do endpoint [{nameof(CadastrarComentario)}].", id);
+            serviceResult = await _cadastrarComentarioService.Executar(id, request, cancelationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Ocorreu um erro ao cadastrar comentario para a postagem de Id {id}.");
             return Problem(ex.StackTrace, statusCode: (int)HttpStatusCode.InternalServerError, title: ex.Message);
         }
 

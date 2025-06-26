@@ -4,8 +4,15 @@ namespace MinhaRedeSocial.Domain.Models.Postagens;
 
 public class Comentario
 {
-    public Guid Id { get; set; }
-    public DateTime Data {  get; set; }
+    public Comentario(string texto, Guid postagemId, Guid usuarioId)
+    {
+        Texto = texto;
+        PostagemId = postagemId;
+        UsuarioId = usuarioId;
+    }
+
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public DateTime Data {  get; set; } = DateTime.Now;
     public string Texto { get; set; }
     public Guid PostagemId { get; set; }
     public Guid UsuarioId { get; set; }

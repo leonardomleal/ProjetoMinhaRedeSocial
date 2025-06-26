@@ -5,7 +5,6 @@ using MinhaRedeSocial.Domain.Contratos.Paged;
 using MinhaRedeSocial.Domain.Contratos.Repositorios;
 using MinhaRedeSocial.Domain.Enums.Sorts;
 using MinhaRedeSocial.Domain.Models.Postagens;
-using MinhaRedeSocial.Domain.Models.Usuarios;
 using MinhaRedeSocial.Infra.Dados;
 
 namespace MinhaRedeSocial.Infra.Repositorios;
@@ -73,7 +72,7 @@ public class PostagemRepository : IPostagemRepository
                                 .Skip((request.Page - 1) * request.PageSize)
                                 .Take(request.PageSize)
                                 .ToListAsync(cancellationToken),
-                        request.Page, request.PageSize, await BuscarTotal(request, cancellationToken)),
+                        request.Page, request.PageSize, await BuscarTotalFeed(request, cancellationToken)),
 
                     BuscarPostagensSort.Nome
                         => new PagedList<Postagem>(
@@ -87,7 +86,7 @@ public class PostagemRepository : IPostagemRepository
                                 .Skip((request.Page - 1) * request.PageSize)
                                 .Take(request.PageSize)
                                 .ToListAsync(cancellationToken),
-                        request.Page, request.PageSize, await BuscarTotal(request, cancellationToken)),
+                        request.Page, request.PageSize, await BuscarTotalFeed(request, cancellationToken)),
 
                     _ => new PagedList<Postagem>(
                         await _context.Postagens
@@ -100,7 +99,7 @@ public class PostagemRepository : IPostagemRepository
                             .Skip((request.Page - 1) * request.PageSize)
                             .Take(request.PageSize)
                             .ToListAsync(cancellationToken),
-                        request.Page, request.PageSize, await BuscarTotal(request, cancellationToken))
+                        request.Page, request.PageSize, await BuscarTotalFeed(request, cancellationToken))
                 };
             }
 
@@ -118,7 +117,7 @@ public class PostagemRepository : IPostagemRepository
                                 .Skip((request.Page - 1) * request.PageSize)
                                 .Take(request.PageSize)
                                 .ToListAsync(cancellationToken),
-                        request.Page, request.PageSize, await BuscarTotal(request, cancellationToken)),
+                        request.Page, request.PageSize, await BuscarTotalFeed(request, cancellationToken)),
 
                 BuscarPostagensSort.Nome
                     => new PagedList<Postagem>(
@@ -132,7 +131,7 @@ public class PostagemRepository : IPostagemRepository
                                 .Skip((request.Page - 1) * request.PageSize)
                                 .Take(request.PageSize)
                                 .ToListAsync(cancellationToken),
-                        request.Page, request.PageSize, await BuscarTotal(request, cancellationToken)),
+                        request.Page, request.PageSize, await BuscarTotalFeed(request, cancellationToken)),
 
                 _ => new PagedList<Postagem>(
                     await _context.Postagens
@@ -145,7 +144,7 @@ public class PostagemRepository : IPostagemRepository
                         .Skip((request.Page - 1) * request.PageSize)
                         .Take(request.PageSize)
                         .ToListAsync(cancellationToken),
-                    request.Page, request.PageSize, await BuscarTotal(request, cancellationToken))
+                    request.Page, request.PageSize, await BuscarTotalFeed(request, cancellationToken))
             };
         }
         catch (DbUpdateException ex)
@@ -203,7 +202,7 @@ public class PostagemRepository : IPostagemRepository
         }
     }
 
-    private async Task<int> BuscarTotal(BuscarPostagensDto request, CancellationToken cancellationToken)
+    private async Task<int> BuscarTotalFeed(BuscarPostagensDto request, CancellationToken cancellationToken)
         => await _context.Postagens
             .AsNoTracking()
             .Where(x => x.UsuarioId == request.Id || request.Amigos!.Contains(x.UsuarioId))
