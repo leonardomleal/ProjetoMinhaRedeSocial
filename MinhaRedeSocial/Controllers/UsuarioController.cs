@@ -17,6 +17,7 @@ public class UsuarioController : ControllerBase
     private readonly ICadastrarUsuarioService _cadastrarUsuarioService;
     private readonly IBuscarSolicitacoesPorUsuarioService _buscarSolicitacoesPorUsuarioService;
     private readonly ICadastrarPostagemService _cadastrarPostagemService;
+    private readonly IPesquisarAmigosService _pesquisarAmigosService;
     private readonly ILogger<UsuarioController> _logger;
 
     public UsuarioController(
@@ -26,6 +27,7 @@ public class UsuarioController : ControllerBase
         ICadastrarUsuarioService cadastrarUsuarioService,
         IBuscarSolicitacoesPorUsuarioService buscarSolicitacoesPorUsuarioService,
         ICadastrarPostagemService cadastrarPostagemService,
+        IPesquisarAmigosService pesquisarAmigosService,
         ILogger<UsuarioController> logger)
     {
         _pesquisarUsuarioService = pesquisarUsuarioService;
@@ -34,6 +36,7 @@ public class UsuarioController : ControllerBase
         _cadastrarUsuarioService = cadastrarUsuarioService;
         _buscarSolicitacoesPorUsuarioService = buscarSolicitacoesPorUsuarioService;
         _cadastrarPostagemService = cadastrarPostagemService;
+        _pesquisarAmigosService = pesquisarAmigosService;
         _logger = logger;
     }
 
@@ -84,8 +87,8 @@ public class UsuarioController : ControllerBase
         return Ok(serviceResult);
     }
 
-    [HttpGet("pesquisar")]
-    public async Task<IActionResult> PesquisarUsuarios([FromQuery] PesquisarUsuariosRequest request, CancellationToken cancelationToken)
+    [HttpPost("pesquisar")]
+    public async Task<IActionResult> PesquisarUsuarios([FromBody] PesquisarUsuariosRequest request, CancellationToken cancelationToken)
     {
         try
         {
@@ -141,5 +144,21 @@ public class UsuarioController : ControllerBase
         }
 
         return Ok(serviceResult);
+    }
+
+    [HttpPost("{id}/amigos")]
+    public async Task<IActionResult> PesquisarAmigos([FromRoute] Guid id,[FromBody] PesquisarAmigosRequest request, CancellationToken cancelationToken)
+    {
+        try
+        {
+            _logger.LogInformation($"Solicitação do endpoint [{nameof(PesquisarAmigos)}].", request);
+            var serviceResult = await _pesquisarAmigosService.Executar(id, request, cancelationToken);
+            return Ok(serviceResult);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Ocorreu um erro ao pesquisar amigo do usuário {id}. (Filtro: {request})");
+            return Problem(ex.StackTrace, statusCode: (int)HttpStatusCode.InternalServerError, title: ex.Message);
+        }
     }
 }
