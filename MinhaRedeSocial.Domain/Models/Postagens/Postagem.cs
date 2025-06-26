@@ -15,9 +15,15 @@ public class Postagem
     public Guid Id { get; set; } = Guid.NewGuid();
     public DateTime Data { get; set; } = DateTime.Now;
     public string Texto { get; set; }
-    public int Curtidas { get; set; } = 0;
+    public int Curtidas { get; private set; } = 0;
     public PostagemPermissoes Permissao { get; set; }
     public Guid UsuarioId { get; set; }
+
+    public void Curtir()
+        => Curtidas++;
+
+    public void Descurtir()
+        => Curtidas = Curtidas > 0 ? --Curtidas : Curtidas = 0;
 
     public List<Comentario> Comentarios { get; set; } = [];
     public Usuario Usuario { get; set; } = null!;

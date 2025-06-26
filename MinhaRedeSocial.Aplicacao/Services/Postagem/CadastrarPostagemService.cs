@@ -16,6 +16,7 @@ public class CadastrarPostagemService : ICadastrarPostagemService
     public CadastrarPostagemService(IPostagemRepository postagemRepository, ILogger<CadastrarPostagemService> logger)
     {
         _postagemRepository = postagemRepository;
+        _logger = logger;
     }
 
     public async Task<CadastrarPostagemResponse> Executar(Guid usuarioId, CadastrarPostagemRequest request, CancellationToken cancellationToken)

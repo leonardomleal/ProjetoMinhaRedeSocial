@@ -16,6 +16,7 @@ public class CadastrarUsuarioService : ICadastrarUsuarioService
     public CadastrarUsuarioService(IUsuarioRepository usuarioRepository, ILogger<CadastrarUsuarioService> logger)
     {
         _usuarioRepository = usuarioRepository;
+        _logger = logger;
     }
 
     public async Task<CadastrarUsuarioResponse> Executar(CadastrarUsuarioRequest request, CancellationToken cancellationToken)
